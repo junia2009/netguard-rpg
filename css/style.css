@@ -746,6 +746,18 @@ body {
 }
 
 /* --- START/SAVEボタン --- */
+#version-label {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 10px;
+  color: #888;
+  margin-top: 2px;
+  font-family: monospace;
+  pointer-events: none;
+  user-select: none;
+}
+
 #gb-center-btns {
   display: flex;
   justify-content: center;
