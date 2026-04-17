@@ -50,8 +50,9 @@ class Game {
     const vh = window.innerHeight;
 
     if (Input.isMobile) {
-      // Mobile: fill screen, controls overlay at bottom
-      const touchH = 140;
+      // Mobile: fill screen, GB controls at bottom
+      const touchEl = document.getElementById('touch-controls');
+      const touchH = touchEl ? touchEl.offsetHeight : 180;
       const gameH = vh - touchH;
       container.style.width = vw + 'px';
       container.style.height = gameH + 'px';

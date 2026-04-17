@@ -76,13 +76,22 @@ const Input = {
       });
     };
     bindAction('btn-touch-attack', 'attack');
+    bindAction('btn-touch-attack', 'useItem');
     bindAction('btn-touch-interact', 'interact');
-    bindAction('btn-touch-item', 'useItem');
     bindAction('btn-touch-inv', 'inventory');
     bindAction('btn-touch-save', 'save');
 
     // Prevent zoom/scroll on the game area
     document.getElementById('game-container').addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+    document.getElementById('touch-controls').addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+    // Prevent double-tap zoom
+    let lastTap = 0;
+    document.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTap < 300) e.preventDefault();
+      lastTap = now;
+    }, { passive: false });
   },
 
   update() {

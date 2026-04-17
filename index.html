@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>NETGUARD:// - サイバーアクションRPG</title>
@@ -23,8 +23,8 @@
       アイテム使用: X ｜ インベントリ: I ｜ セーブ: Q
     </p>
     <p class="controls-hint controls-hint-mobile">
-      方向パッド: 移動 ｜ ATK: 攻撃 ｜ ACT: 会話/決定<br>
-      ITM: アイテム ｜ INV: インベントリ ｜ SAV: セーブ
+      十字キー: 移動 ｜ A: 攻撃/アイテム使用 ｜ B: 会話/決定<br>
+      SAVE: セーブ ｜ MENU: インベントリ
     </p>
   </div>
 
@@ -112,23 +112,30 @@
     <div class="bar boss-bar"><div class="bar-fill boss-fill" id="boss-hp-fill"></div></div>
   </div>
 
-  <!-- タッチコントロール -->
+  <!-- タッチコントロール（ゲームボーイ風） -->
   <div id="touch-controls" class="hidden">
-    <div id="touch-dpad">
-      <button class="dpad-btn" data-dir="up">▲</button>
-      <div class="dpad-mid-row">
-        <button class="dpad-btn" data-dir="left">◀</button>
-        <button class="dpad-btn dpad-center" data-dir="none" aria-label="center"></button>
-        <button class="dpad-btn" data-dir="right">▶</button>
+    <div id="gb-body">
+      <div id="gb-controls-row">
+        <!-- 十字キー -->
+        <div id="gb-dpad">
+          <div class="dpad-cross">
+            <button class="dpad-btn dpad-up" data-dir="up" aria-label="上">▲</button>
+            <button class="dpad-btn dpad-left" data-dir="left" aria-label="左">◀</button>
+            <div class="dpad-center-dot"></div>
+            <button class="dpad-btn dpad-right" data-dir="right" aria-label="右">▶</button>
+            <button class="dpad-btn dpad-down" data-dir="down" aria-label="下">▼</button>
+          </div>
+        </div>
+        <!-- ABボタン -->
+        <div id="gb-ab">
+          <button class="ab-btn" id="btn-touch-attack">A</button>
+          <button class="ab-btn" id="btn-touch-interact">B</button>
+        </div>
       </div>
-      <button class="dpad-btn" data-dir="down">▼</button>
-    </div>
-    <div id="touch-action-btns">
-      <button class="action-btn" id="btn-touch-attack">ATK</button>
-      <button class="action-btn" id="btn-touch-interact">ACT</button>
-      <button class="action-btn action-btn-sm" id="btn-touch-item">ITM</button>
-      <button class="action-btn action-btn-sm" id="btn-touch-inv">INV</button>
-      <button class="action-btn action-btn-sm" id="btn-touch-save">SAV</button>
+      <div id="gb-center-btns">
+        <button class="center-btn" id="btn-touch-save">SAVE</button>
+        <button class="center-btn" id="btn-touch-inv">MENU</button>
+      </div>
     </div>
   </div>
 </div>

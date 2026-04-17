@@ -538,44 +538,51 @@ body {
   pointer-events: none;
 }
 
-/* --- タッチコントロール --- */
+/* --- タッチコントロール（ゲームボーイ風） --- */
 #touch-controls {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 140px;
+  z-index: 200;
+  touch-action: none;
+}
+
+#gb-body {
+  background: #181828;
+  border-top: 3px solid #0a0a18;
+  padding: 12px 16px;
+  padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+}
+
+#gb-controls-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 16px;
-  background: rgba(0, 5, 15, 0.92);
-  border-top: 1px solid rgba(0, 200, 255, 0.2);
-  z-index: 200;
-  touch-action: none;
-  padding-bottom: env(safe-area-inset-bottom, 0);
+  margin-bottom: 8px;
 }
 
-#touch-dpad {
+/* --- 十字キー --- */
+#gb-dpad {
+  width: 130px;
+  height: 130px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 2px;
+  justify-content: center;
 }
 
-.dpad-mid-row {
-  display: flex;
-  gap: 2px;
+.dpad-cross {
+  display: grid;
+  grid-template-columns: 42px 42px 42px;
+  grid-template-rows: 42px 42px 42px;
+  gap: 0;
 }
 
 .dpad-btn {
-  width: 48px;
-  height: 48px;
-  background: rgba(0, 200, 255, 0.1);
-  border: 1px solid rgba(0, 200, 255, 0.4);
-  border-radius: 6px;
-  color: #00ccff;
-  font-size: 16px;
+  background: #252540;
+  border: none;
+  color: #556;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -585,50 +592,113 @@ body {
 }
 
 .dpad-btn:active {
-  background: rgba(0, 200, 255, 0.35);
-  border-color: #00ffcc;
+  background: #3a3a60;
+  color: #00ccff;
 }
 
-.dpad-center {
-  background: rgba(0, 50, 80, 0.3);
-  border-color: transparent;
+.dpad-up {
+  grid-column: 2;
+  grid-row: 1;
+  border-radius: 6px 6px 0 0;
+  border-top: 2px solid #333;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
 }
 
-#touch-action-btns {
+.dpad-down {
+  grid-column: 2;
+  grid-row: 3;
+  border-radius: 0 0 6px 6px;
+  border-bottom: 2px solid #333;
+  border-left: 2px solid #333;
+  border-right: 2px solid #333;
+}
+
+.dpad-left {
+  grid-column: 1;
+  grid-row: 2;
+  border-radius: 6px 0 0 6px;
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+  border-left: 2px solid #333;
+}
+
+.dpad-right {
+  grid-column: 3;
+  grid-row: 2;
+  border-radius: 0 6px 6px 0;
+  border-top: 2px solid #333;
+  border-bottom: 2px solid #333;
+  border-right: 2px solid #333;
+}
+
+.dpad-center-dot {
+  grid-column: 2;
+  grid-row: 2;
+  background: #252540;
+  border: none;
+}
+
+/* --- A/Bボタン --- */
+#gb-ab {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  justify-content: flex-end;
+  gap: 12px;
   align-items: center;
-  max-width: 200px;
+  transform: rotate(-15deg);
 }
 
-.action-btn {
-  width: 56px;
-  height: 56px;
+.ab-btn {
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  background: rgba(0, 200, 255, 0.12);
-  border: 2px solid rgba(0, 200, 255, 0.5);
-  color: #00ffcc;
-  font-size: 11px;
+  background: #6b2050;
+  border: 3px solid #8a3068;
+  color: #eee;
+  font-size: 16px;
   font-weight: bold;
+  font-family: 'Consolas', 'Monaco', monospace;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  box-shadow: 0 3px 0 #4a1038, inset 0 1px 2px rgba(255,255,255,0.1);
+}
+
+.ab-btn:active {
+  background: #8a3068;
+  box-shadow: 0 1px 0 #4a1038;
+  transform: translateY(2px);
+}
+
+#btn-touch-interact {
+  margin-top: 16px;
+}
+
+/* --- START/SAVEボタン --- */
+#gb-center-btns {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.center-btn {
+  width: 60px;
+  height: 22px;
+  border-radius: 11px;
+  background: #333;
+  border: none;
+  color: #888;
+  font-size: 9px;
   font-family: 'Consolas', 'Monaco', monospace;
   letter-spacing: 1px;
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
+  transform: rotate(-5deg);
 }
 
-.action-btn:active {
-  background: rgba(0, 255, 200, 0.3);
-  border-color: #00ffcc;
-}
-
-.action-btn-sm {
-  width: 42px;
-  height: 42px;
-  font-size: 9px;
-  border-width: 1px;
+.center-btn:active {
+  background: #555;
+  color: #ccc;
 }
 
 /* --- モバイル対応 --- */
@@ -638,16 +708,17 @@ body {
 
 @media (max-width: 840px), (hover: none) and (pointer: coarse) {
   body {
+    background: #0c0c18;
     align-items: flex-start;
   }
 
   #game-container {
     width: 100vw !important;
-    height: calc(100vh - 140px) !important;
-    height: calc(100dvh - 140px) !important;
     border: none;
     border-radius: 0;
     box-shadow: none;
+    /* Screen bezel */
+    border-bottom: 4px solid #101020;
   }
 
   #game-canvas {
@@ -696,8 +767,7 @@ body {
   /* Overlay panels */
   .overlay-panel {
     width: calc(100vw - 32px);
-    max-height: calc(100vh - 180px);
-    max-height: calc(100dvh - 180px);
+    max-height: 60vh;
     padding: 16px;
   }
 
