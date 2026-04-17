@@ -57,6 +57,27 @@ const UI = {
 
     const mapName = GameData.MAPS[this.game.currentMap]?.name || '';
     document.getElementById('hud-map').textContent = `⬡ ${mapName}`;
+
+    // Skill HUD
+    const skillEl = document.getElementById('hud-skill');
+    const skill = player.currentSkill;
+    if (skill) {
+      const cdLeft = Math.max(0, player.skillCooldown);
+      const ready = cdLeft <= 0 && player.mp >= skill.mp;
+      skillEl.innerHTML = `<span class="skill-name${ready ? ' skill-ready' : ''}">[Z] ${skill.name}</span> <span class="skill-mp">MP${skill.mp}</span>` +
+        (cdLeft > 0 ? ` <span class="skill-cd">${cdLeft.toFixed(1)}s</span>` : '');
+      skillEl.classList.remove('hidden');
+    } else {
+      skillEl.classList.add('hidden');
+    }
+
+    // Buff indicators
+    const buffEl = document.getElementById('hud-buffs');
+    const buffs = [];
+    if (player.buffDefTimer > 0) buffs.push(`🛡Firewall ${player.buffDefTimer.toFixed(1)}s`);
+    if (player.buffAtkTimer > 0) buffs.push(`⚔ATK↑ ${player.buffAtkTimer.toFixed(1)}s`);
+    buffEl.textContent = buffs.join('  ');
+    buffEl.classList.toggle('hidden', buffs.length === 0);
   },
 
   // --- ボスHPバー ---
@@ -276,6 +297,7 @@ const UI = {
   renderEquipment(content, player) {
     const weapon = player.weapon ? GameData.ITEMS[player.weapon] : null;
     const armor = player.armor ? GameData.ITEMS[player.armor] : null;
+    const skill = weapon?.skill;
 
     content.innerHTML = `
       <div class="equip-slot">
@@ -283,6 +305,11 @@ const UI = {
         <span class="equip-item-name">${weapon ? weapon.icon + ' ' + weapon.name : '--- なし ---'}</span>
         ${weapon ? `<span style="color:#aaa;font-size:12px;">${weapon.desc}</span>` : ''}
       </div>
+      ${skill ? `<div class="equip-slot skill-info">
+        <span class="equip-slot-name">スキル [Z]</span>
+        <span class="equip-item-name" style="color:#44ffff;">${skill.name}</span>
+        <span style="color:#aaa;font-size:12px;">${skill.desc} (MP${skill.mp})</span>
+      </div>` : ''}
       <div class="equip-slot">
         <span class="equip-slot-name">防具</span>
         <span class="equip-item-name">${armor ? armor.icon + ' ' + armor.name : '--- なし ---'}</span>

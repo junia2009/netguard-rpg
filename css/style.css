@@ -170,6 +170,39 @@ body {
 
 #hud-level { color: #00ffcc; font-weight: bold; }
 
+/* --- スキルHUD --- */
+#hud-skill {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #aaa;
+}
+.skill-name { color: #888; }
+.skill-name.skill-ready { color: #44ffff; font-weight: bold; }
+.skill-mp { color: #4488ff; margin-left: 4px; }
+.skill-cd { color: #ff8844; margin-left: 4px; }
+
+#hud-buffs {
+  background: rgba(0, 0, 0, 0.7);
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #ffcc44;
+}
+
+/* --- スキルダメージ --- */
+.damage-num.skill-damage { color: #44ffff; font-size: 20px; }
+
+/* --- スキルタッチボタン --- */
+.skill-btn {
+  background: rgba(0, 200, 255, 0.3) !important;
+  border-color: #44ffff !important;
+  color: #44ffff !important;
+  font-size: 11px !important;
+  margin-top: 4px;
+}
+
 /* --- ダイアログ --- */
 #dialogue-box {
   position: absolute;

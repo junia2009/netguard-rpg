@@ -378,35 +378,43 @@ GameData.ITEMS = {
   antivirus_v1: {
     name: 'アンチウイルス v1', desc: 'ATK+5', type: 'weapon',
     icon: '{v1}', stats: { atk: 5 }, buyPrice: 50, sellPrice: 25,
+    skill: { name: 'PortScan', desc: '脅威をスキャンして攻撃', mp: 5, cooldown: 1.5, type: 'attack', power: 1.5 },
   },
   antivirus_v2: {
     name: 'アンチウイルス v2', desc: 'ATK+12', type: 'weapon',
     icon: '{v2}', stats: { atk: 12 }, buyPrice: 200, sellPrice: 100,
+    skill: { name: 'Quarantine', desc: 'DEF無視で隔離除去', mp: 8, cooldown: 2.0, type: 'pierce', power: 1.2 },
   },
   antivirus_v3: {
     name: 'アンチウイルス v3', desc: 'ATK+20', type: 'weapon',
     icon: '{v3}', stats: { atk: 20 }, buyPrice: 500, sellPrice: 250,
+    skill: { name: 'FullScan', desc: '周囲を一斉スキャン駆除', mp: 15, cooldown: 3.0, type: 'aoe', power: 0.8 },
   },
   quantum_blade: {
     name: '量子ブレード', desc: 'ATK+40', type: 'weapon',
     icon: '{Q}', stats: { atk: 40 }, buyPrice: 0, sellPrice: 999,
+    skill: { name: 'Defrag', desc: '自己修復でHP回復', mp: 15, cooldown: 4.0, type: 'heal', power: 0.3 },
   },
   // --- ダンジョン武器 ---
   firewall_breaker: {
     name: 'FWブレイカー', desc: 'ATK+28', type: 'weapon',
     icon: '{FB}', stats: { atk: 28 }, buyPrice: 800, sellPrice: 400,
+    skill: { name: 'Firewall', desc: '防壁展開で被ダメ半減', mp: 10, cooldown: 8.0, type: 'buff_def', duration: 5.0 },
   },
   rootkit_slicer: {
     name: 'ルートキットスライサー', desc: 'ATK+35', type: 'weapon',
     icon: '{RS}', stats: { atk: 35 }, buyPrice: 1200, sellPrice: 600,
+    skill: { name: 'Sandbox', desc: '敵を隔離して行動不能に', mp: 12, cooldown: 6.0, type: 'stun', duration: 3.0 },
   },
   zero_day_edge: {
     name: 'ゼロデイエッジ', desc: 'ATK+50', type: 'weapon',
     icon: '{ZD}', stats: { atk: 50 }, buyPrice: 2000, sellPrice: 1000,
+    skill: { name: 'ForceTerminate', desc: '悪性プロセスを強制終了', mp: 20, cooldown: 3.0, type: 'attack', power: 2.5 },
   },
   neural_lance: {
     name: 'ニューラルランス', desc: 'ATK+65', type: 'weapon',
     icon: '{NL}', stats: { atk: 65 }, buyPrice: 0, sellPrice: 2000,
+    skill: { name: 'Rollback', desc: 'HP大回復+ATK強化', mp: 25, cooldown: 10.0, type: 'heal_buff', power: 0.5, duration: 5.0 },
   },
   encryption_v1: {
     name: '暗号シールド v1', desc: 'DEF+4', type: 'armor',

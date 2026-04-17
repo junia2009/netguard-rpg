@@ -489,6 +489,11 @@ class Game {
       Combat.playerAttack(this.player, this.enemies);
     }
 
+    // Skill
+    if (Input.skill) {
+      Combat.playerSkill(this.player, this.enemies);
+    }
+
     // Interact
     if (Input.interact) {
       this.handleInteraction();

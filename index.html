@@ -59,6 +59,8 @@
       <span id="hud-gold">◆ 0G</span>
       <span id="hud-map">⬡ ホームサーバー</span>
     </div>
+    <div id="hud-skill" class="hidden"></div>
+    <div id="hud-buffs" class="hidden"></div>
   </div>
 
   <!-- ダイアログ -->
@@ -167,20 +169,21 @@
             <div id="joystick-thumb"></div>
           </div>
         </div>
-        <!-- A/B/Yボタン（三角配置） -->
+        <!-- A/B/Y/Skillボタン -->
         <div id="gb-ab">
           <button class="ab-btn" id="btn-touch-item">Y</button>
           <div class="ab-row">
             <button class="ab-btn" id="btn-touch-interact">B</button>
             <button class="ab-btn" id="btn-touch-attack">A</button>
           </div>
+          <button class="ab-btn skill-btn" id="btn-touch-skill">SK</button>
         </div>
       </div>
       <div id="gb-center-btns">
         <button class="center-btn" id="btn-touch-save">SAVE</button>
         <button class="center-btn" id="btn-touch-inv">MENU</button>
         <button id="btn-bgm-toggle" class="center-btn" title="BGM ON/OFF">♫</button>
-        <span id="version-label">ver2.4.1</span>
+        <span id="version-label">ver2.5.0</span>
       </div>
     </div>
   </div>

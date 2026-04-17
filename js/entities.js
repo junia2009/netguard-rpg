@@ -34,11 +34,18 @@ class Player {
     this.weapon = init.weapon;
     this.armor = init.armor;
     this.inventory = { ...init.inventory };
+
+    // Skill system
+    this.skillCooldown = 0;
+    this.skillAnimTimer = 0;  // visual feedback
+    this.buffDefTimer = 0;    // Firewall buff remaining
+    this.buffAtkTimer = 0;    // Rollback ATK buff remaining
   }
 
   get atk() {
     let a = this.baseAtk;
     if (this.weapon && GameData.ITEMS[this.weapon]) a += GameData.ITEMS[this.weapon].stats.atk;
+    if (this.buffAtkTimer > 0) a = Math.floor(a * 1.5);
     return a;
   }
 
@@ -48,10 +55,20 @@ class Player {
     return d;
   }
 
+  get currentSkill() {
+    if (!this.weapon) return null;
+    const item = GameData.ITEMS[this.weapon];
+    return item ? item.skill : null;
+  }
+
   update(dt, mapId, entities) {
     // Timers
     if (this.attackCooldown > 0) this.attackCooldown -= dt;
     if (this.invincible > 0) this.invincible -= dt;
+    if (this.skillCooldown > 0) this.skillCooldown -= dt;
+    if (this.skillAnimTimer > 0) this.skillAnimTimer -= dt;
+    if (this.buffDefTimer > 0) this.buffDefTimer -= dt;
+    if (this.buffAtkTimer > 0) this.buffAtkTimer -= dt;
     if (this.attacking) {
       this.attackTimer -= dt;
       if (this.attackTimer <= 0) this.attacking = false;
@@ -145,6 +162,23 @@ class Player {
     return true;
   }
 
+  canUseSkill() {
+    const skill = this.currentSkill;
+    if (!skill) return false;
+    if (this.skillCooldown > 0) return false;
+    if (this.mp < skill.mp) return false;
+    return true;
+  }
+
+  startSkill() {
+    const skill = this.currentSkill;
+    if (!this.canUseSkill()) return false;
+    this.mp -= skill.mp;
+    this.skillCooldown = skill.cooldown;
+    this.skillAnimTimer = 0.4;
+    return true;
+  }
+
   getAttackHitbox() {
     const range = 32;
     const w = 28, h = 28;
@@ -158,7 +192,8 @@ class Player {
 
   takeDamage(amount) {
     if (this.invincible > 0) return 0;
-    const actual = Math.max(1, amount - this.def);
+    let actual = Math.max(1, amount - this.def);
+    if (this.buffDefTimer > 0) actual = Math.max(1, Math.floor(actual * 0.5));
     this.hp = Math.max(0, this.hp - actual);
     this.invincible = 0.8;
     return actual;
@@ -273,6 +308,36 @@ class Player {
       this.renderAttack(ctx, pos, bobY);
     }
 
+    // Skill activation flash
+    if (this.skillAnimTimer > 0) {
+      ctx.strokeStyle = `rgba(68, 255, 255, ${this.skillAnimTimer / 0.4})`;
+      ctx.lineWidth = 3;
+      const r = s + 8;
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y - bobY, r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    // Buff aura
+    if (this.buffDefTimer > 0) {
+      ctx.strokeStyle = `rgba(68, 136, 255, 0.5)`;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y - bobY, s + 4, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    if (this.buffAtkTimer > 0) {
+      ctx.strokeStyle = `rgba(255, 136, 255, 0.5)`;
+      ctx.lineWidth = 2;
+      ctx.setLineDash([3, 3]);
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y - bobY, s + 6, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
     ctx.globalAlpha = 1;
   }
 
@@ -348,6 +413,7 @@ class Enemy {
     this.cooldownTimer = 0;
     this.hitFlash = 0;
     this.deathTimer = 0;
+    this.stunTimer = 0;
     this.state = 'idle'; // idle, chase, attack, returning
     this.facing = 'down';
     this.animTimer = 0;
@@ -361,6 +427,10 @@ class Enemy {
 
     if (this.hitFlash > 0) this.hitFlash -= dt;
     if (this.cooldownTimer > 0) this.cooldownTimer -= dt * 1000;
+    if (this.stunTimer > 0) {
+      this.stunTimer -= dt;
+      return false; // stunned — skip all actions
+    }
 
     const dx = playerX - this.x;
     const dy = playerY - this.y;
@@ -502,6 +572,14 @@ class Enemy {
       ctx.fillRect(barX, barY, barW, barH);
       ctx.fillStyle = this.isBoss ? '#ff4444' : '#44cc44';
       ctx.fillRect(barX, barY, barW * (this.hp / this.maxHp), barH);
+    }
+
+    // Stun indicator
+    if (this.stunTimer > 0) {
+      ctx.fillStyle = '#ffcc00';
+      ctx.font = 'bold 10px monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText('★STUN★', pos.x, pos.y - s / 2 - 12);
     }
 
     return true;
