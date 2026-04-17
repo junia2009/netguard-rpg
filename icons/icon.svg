@@ -5,11 +5,7 @@
       <stop offset="100%" stop-color="#020810"/>
     </radialGradient>
     <filter id="glow">
-      <feGaussianBlur stdDeviation="6" result="blur"/>
-      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-    </filter>
-    <filter id="glow-strong">
-      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feGaussianBlur stdDeviation="8" result="blur"/>
       <feComposite in="SourceGraphic" in2="blur" operator="over"/>
     </filter>
   </defs>
@@ -17,7 +13,7 @@
   <!-- Background -->
   <rect width="512" height="512" rx="80" fill="url(#bg)"/>
 
-  <!-- Grid lines (cyber world) -->
+  <!-- Grid lines -->
   <g stroke="#00ccff" stroke-opacity="0.08" stroke-width="1">
     <line x1="0" y1="128" x2="512" y2="128"/>
     <line x1="0" y1="256" x2="512" y2="256"/>
@@ -27,60 +23,39 @@
     <line x1="384" y1="0" x2="384" y2="512"/>
   </g>
 
-  <!-- Outer hex ring -->
-  <polygon points="256,80 400,160 400,340 256,420 112,340 112,160"
-           fill="none" stroke="#00ccff" stroke-width="2" stroke-opacity="0.15" filter="url(#glow)"/>
+  <!-- Hex ring -->
+  <polygon points="256,82 398,162 398,342 256,422 114,342 114,162"
+           fill="none" stroke="#00ccff" stroke-width="2" stroke-opacity="0.12"/>
 
-  <!-- Data streams (background decoration) -->
-  <g stroke="#00ccff" stroke-opacity="0.12" stroke-width="1.5">
-    <line x1="80" y1="140" x2="180" y2="140"/>
-    <line x1="80" y1="155" x2="150" y2="155"/>
-    <line x1="332" y1="370" x2="432" y2="370"/>
-    <line x1="362" y1="355" x2="432" y2="355"/>
-  </g>
-
-  <!-- Player character (TRON-style program) -->
-  <g filter="url(#glow-strong)">
+  <!-- Player character (close-up) -->
+  <g filter="url(#glow)">
     <!-- Body -->
-    <rect x="196" y="176" width="120" height="140" rx="4" fill="#001830"/>
-    <rect x="196" y="176" width="120" height="140" rx="4"
-          fill="none" stroke="#00ccff" stroke-width="4"/>
+    <rect x="148" y="120" width="215" height="256" rx="4" fill="#001830"/>
+    <rect x="148" y="120" width="215" height="256" rx="4"
+          fill="none" stroke="#00ccff" stroke-width="6"/>
 
-    <!-- Circuit lines inside body -->
-    <path d="M236 176 L236 240 L276 240 L276 316"
-          fill="none" stroke="#00ccff" stroke-opacity="0.5" stroke-width="2"/>
-    <path d="M226 220 L246 220" fill="none" stroke="#00ccff" stroke-opacity="0.4" stroke-width="1.5"/>
-    <path d="M266 260 L286 260" fill="none" stroke="#00ccff" stroke-opacity="0.4" stroke-width="1.5"/>
+    <!-- Circuit lines -->
+    <path d="M219 120 L219 240 L293 240 L293 376"
+          fill="none" stroke="#00ccff" stroke-opacity="0.5" stroke-width="3"/>
+    <path d="M170 305 L256 305"
+          fill="none" stroke="#00ccff" stroke-opacity="0.5" stroke-width="3"/>
+    <path d="M280 200 L340 200"
+          fill="none" stroke="#00ccff" stroke-opacity="0.5" stroke-width="3"/>
 
     <!-- Core light -->
-    <rect x="246" y="236" width="20" height="20" rx="2" fill="#00ffff"/>
-    <rect x="249" y="239" width="14" height="14" rx="1" fill="#66ffff" opacity="0.8"/>
+    <rect x="225" y="217" width="62" height="62" rx="3" fill="#00ffff"/>
+    <rect x="234" y="226" width="44" height="44" rx="2" fill="#66ffff" opacity="0.8"/>
 
-    <!-- Direction indicator (up arrow) -->
-    <rect x="248" y="164" width="16" height="8" rx="1" fill="#00ffcc"/>
+    <!-- Direction indicator -->
+    <rect x="243" y="105" width="26" height="10" rx="2" fill="#00ffcc"/>
 
-    <!-- Shield / weapon glow lines -->
-    <line x1="186" y1="200" x2="186" y2="290" stroke="#00ffcc" stroke-width="3" stroke-opacity="0.6"/>
-    <line x1="326" y1="200" x2="326" y2="290" stroke="#00ffcc" stroke-width="3" stroke-opacity="0.6"/>
+    <!-- Shield lines -->
+    <line x1="135" y1="146" x2="135" y2="350" stroke="#00ffcc" stroke-width="4" stroke-opacity="0.6"/>
+    <line x1="376" y1="146" x2="376" y2="350" stroke="#00ffcc" stroke-width="4" stroke-opacity="0.6"/>
   </g>
 
-  <!-- Bottom text area glow -->
-  <text x="256" y="400" text-anchor="middle"
+  <!-- Title text -->
+  <text x="256" y="418" text-anchor="middle"
         font-family="Consolas, Monaco, monospace" font-size="30" font-weight="bold"
         fill="#00ccff" opacity="0.5" filter="url(#glow)">NETGUARD://</text>
-
-  <!-- Scan line effect -->
-  <g opacity="0.04">
-    <rect x="0" y="0" width="512" height="2" fill="white"/>
-    <rect x="0" y="8" width="512" height="2" fill="white"/>
-    <rect x="0" y="16" width="512" height="2" fill="white"/>
-    <rect x="0" y="24" width="512" height="2" fill="white"/>
-    <rect x="0" y="32" width="512" height="2" fill="white"/>
-    <rect x="0" y="40" width="512" height="2" fill="white"/>
-    <rect x="0" y="48" width="512" height="2" fill="white"/>
-    <rect x="0" y="56" width="512" height="2" fill="white"/>
-    <rect x="0" y="64" width="512" height="2" fill="white"/>
-    <rect x="0" y="72" width="512" height="2" fill="white"/>
-    <rect x="0" y="80" width="512" height="2" fill="white"/>
-  </g>
 </svg>
