@@ -314,8 +314,33 @@ body {
   border-bottom: 1px solid #333;
 }
 
+.item-row.equipped {
+  background: rgba(0, 180, 255, 0.08);
+  border-left: 3px solid #0af;
+}
+
 .item-row:hover {
   background: rgba(255, 255, 255, 0.05);
+}
+
+.item-category {
+  padding: 6px 12px 4px;
+  font-size: 11px;
+  color: #6af;
+  border-bottom: 1px solid #224;
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+.equip-badge {
+  display: inline-block;
+  background: #0af;
+  color: #000;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 0 4px;
+  border-radius: 2px;
+  margin-left: 4px;
 }
 
 .item-name {

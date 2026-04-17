@@ -231,16 +231,42 @@ const UI = {
     if (items.length === 0) {
       html = '<p style="color:#888;text-align:center;padding:20px;">アイテムがありません</p>';
     } else {
+      // Sort: weapon > armor > consumable, then by power descending
+      const typeOrder = { weapon: 0, armor: 1, consumable: 2 };
+      const getSortValue = (itemId) => {
+        const item = GameData.ITEMS[itemId];
+        if (!item) return 99;
+        if (item.stats && item.stats.atk) return -item.stats.atk;
+        if (item.stats && item.stats.def) return -item.stats.def;
+        if (item.effect && item.effect.hp) return -item.effect.hp;
+        return 0;
+      };
+      items.sort((a, b) => {
+        const itemA = GameData.ITEMS[a[0]], itemB = GameData.ITEMS[b[0]];
+        const tA = (itemA ? typeOrder[itemA.type] : 3) || 3;
+        const tB = (itemB ? typeOrder[itemB.type] : 3) || 3;
+        if (tA !== tB) return tA - tB;
+        return getSortValue(a[0]) - getSortValue(b[0]);
+      });
+
+      let lastType = '';
       items.forEach(([itemId, count]) => {
         const item = GameData.ITEMS[itemId];
         if (!item) return;
+        // Category header
+        const typeLabel = item.type === 'weapon' ? '⚔ 武器' : item.type === 'armor' ? '🛡 防具' : '💊 回復';
+        if (item.type !== lastType) {
+          html += `<div class="item-category">${typeLabel}</div>`;
+          lastType = item.type;
+        }
         const canUse = item.type === 'consumable';
         const canEquip = item.type === 'weapon' || item.type === 'armor';
-        html += `<div class="item-row">
-          <span class="item-name">${item.icon} ${item.name} <span class="item-count">x${count}</span></span>
+        const isEquipped = (item.type === 'weapon' && player.weapon === itemId) || (item.type === 'armor' && player.armor === itemId);
+        html += `<div class="item-row${isEquipped ? ' equipped' : ''}">
+          <span class="item-name">${item.icon} ${item.name} <span class="item-count">x${count}</span>${isEquipped ? ' <span class="equip-badge">E</span>' : ''}</span>
           <span style="color:#888;font-size:11px;">${item.desc}</span>
           ${canUse ? `<button class="item-btn" onclick="UI.useItemFromInventory('${itemId}')">使う</button>` : ''}
-          ${canEquip ? `<button class="item-btn" onclick="UI.equipItem('${itemId}')">装備</button>` : ''}
+          ${canEquip && !isEquipped ? `<button class="item-btn" onclick="UI.equipItem('${itemId}')">装備</button>` : ''}
         </div>`;
       });
     }

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'netguard-v6';
+const CACHE_NAME = 'netguard-v7';
 const ASSETS = [
   './',
   './index.html',
