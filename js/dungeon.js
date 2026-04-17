@@ -150,9 +150,15 @@ const DungeonGenerator = (() => {
 
   function generate(floor, totalFloors) {
     totalFloors = totalFloors || TOTAL_FLOORS;
+    const isBossFloor = floor >= totalFloors;
+
+    // Boss floor: special single-room arena
+    if (isBossFloor) {
+      return generateBossFloor(floor);
+    }
+
     const w = 30;
     const h = 25;
-    const isBossFloor = floor >= totalFloors;
 
     // Use DARK(6) as dungeon floor tile
     const floorTile = 6;
@@ -229,26 +235,20 @@ const DungeonGenerator = (() => {
     }
 
     // Non-boss floors: stairs down to next floor
-    if (!isBossFloor) {
-      portals.push({
-        x: exitCX, y: exitCY,
-        target: `rdungeon_f${floor + 1}`,
-        spawnX: 0, spawnY: 0, // overridden by game.js
-        isStairsDown: true,
-      });
-    }
+    portals.push({
+      x: exitCX, y: exitCY,
+      target: `rdungeon_f${floor + 1}`,
+      spawnX: 0, spawnY: 0, // overridden by game.js
+      isStairsDown: true,
+    });
 
     // Enemies
     const enemies = [];
     const enemyTypes = getEnemyTypes(floor);
     const enemyCount = 4 + floor * 2;
 
-    // Place enemies in rooms (skip entrance; skip exit on boss floor)
-    const enemyRooms = rooms.filter((r, i) => {
-      if (i === 0) return false;
-      if (isBossFloor && i === exitRoomIdx) return false;
-      return true;
-    });
+    // Place enemies in rooms (skip entrance room)
+    const enemyRooms = rooms.filter((r, i) => i !== 0);
     for (let i = 0; i < enemyCount; i++) {
       if (enemyRooms.length === 0) break;
       const room = enemyRooms[i % enemyRooms.length];
@@ -256,11 +256,6 @@ const DungeonGenerator = (() => {
       const ey = room.y + 1 + Math.floor(Math.random() * Math.max(1, room.h - 2));
       const type = enemyTypes[Math.floor(Math.random() * enemyTypes.length)];
       enemies.push({ type, x: ex, y: ey });
-    }
-
-    // Boss on final floor
-    if (isBossFloor) {
-      enemies.push({ type: 'dark_ai', x: exitCX, y: exitCY });
     }
 
     // Chests
@@ -283,7 +278,7 @@ const DungeonGenerator = (() => {
     return {
       id: mapId,
       map: {
-        name: isBossFloor ? `異常セクター B${floor}F - コア` : `異常セクター B${floor}F`,
+        name: `異常セクター B${floor}F`,
         width: w,
         height: h,
         tileData: data,
@@ -292,13 +287,69 @@ const DungeonGenerator = (() => {
         npcs: [],
         enemies,
         chests,
-        bgColor: isBossFloor ? '#100005' : '#0d0014',
+        bgColor: '#0d0014',
       },
       entranceX: entranceCX,
       entranceY: entranceCY,
       exitX: exitCX,
       exitY: exitCY,
-      isBossFloor,
+      isBossFloor: false,
+    };
+  }
+
+  // --- Boss floor: single arena room ---
+  function generateBossFloor(floor) {
+    const w = 15;
+    const h = 15;
+    const floorTile = 5; // STONE for boss arena
+
+    const data = new Array(w * h).fill(1);
+
+    // Carve arena (leave 1-tile wall border)
+    for (let y = 1; y < h - 1; y++) {
+      for (let x = 1; x < w - 1; x++) {
+        data[y * w + x] = floorTile;
+      }
+    }
+
+    // Corner lava pillars for atmosphere
+    const lavaPositions = [
+      { x: 3, y: 3 }, { x: w - 4, y: 3 },
+      { x: 3, y: h - 4 }, { x: w - 4, y: h - 4 },
+    ];
+    lavaPositions.forEach(p => { data[p.y * w + p.x] = 7; }); // LAVA
+
+    // Player spawns at bottom center
+    const spawnX = Math.floor(w / 2);
+    const spawnY = h - 3;
+
+    // Boss at top center
+    const bossX = Math.floor(w / 2);
+    const bossY = 3;
+
+    const mapId = `rdungeon_f${floor}`;
+
+    return {
+      id: mapId,
+      map: {
+        name: `異常セクター B${floor}F - コア`,
+        width: w,
+        height: h,
+        tileData: data,
+        playerStart: { x: spawnX, y: spawnY },
+        portals: [],
+        npcs: [],
+        enemies: [
+          { type: 'dark_ai', x: bossX, y: bossY },
+        ],
+        chests: [],
+        bgColor: '#100005',
+      },
+      entranceX: spawnX,
+      entranceY: spawnY,
+      exitX: bossX,
+      exitY: bossY,
+      isBossFloor: true,
     };
   }
 
