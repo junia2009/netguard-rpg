@@ -20,6 +20,9 @@ class Game {
 
     // Random dungeon state
     this.dungeonState = null; // { active, floor, totalFloors }
+
+    // Portal cooldown to prevent instant re-trigger after teleport
+    this.portalCooldown = 0;
   }
 
   init() {
@@ -181,6 +184,7 @@ class Game {
   }
 
   teleportPlayer(portal) {
+    this.portalCooldown = 0.5; // 0.5s cooldown after any teleport
     // Gate: north exit requires bossDefeated
     if (portal.target === 'random_dungeon') {
       if (!this.player.bossDefeated) {
@@ -484,10 +488,14 @@ class Game {
     // Remove fully dead enemies
     this.enemies = this.enemies.filter(e => e.alive || e.deathTimer > 0);
 
-    // Check portals
-    const portal = MapRenderer.getPortalAt(this.currentMap, this.player.x, this.player.y);
-    if (portal) {
-      this.teleportPlayer(portal);
+    // Check portals (with cooldown to prevent instant re-trigger)
+    if (this.portalCooldown > 0) {
+      this.portalCooldown -= dt;
+    } else {
+      const portal = MapRenderer.getPortalAt(this.currentMap, this.player.x, this.player.y);
+      if (portal) {
+        this.teleportPlayer(portal);
+      }
     }
 
     // Camera

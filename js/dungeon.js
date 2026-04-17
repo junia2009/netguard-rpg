@@ -216,10 +216,13 @@ const DungeonGenerator = (() => {
     // Portals
     const portals = [];
 
-    // Floor 1: entrance portal returns to town
+    // Floor 1: entrance portal returns to town (offset from spawn so player doesn't land on it)
     if (floor === 1) {
+      // Place stairs at corner of entrance room, away from center spawn
+      const stairsX = entranceRoom.x;
+      const stairsY = entranceRoom.y;
       portals.push({
-        x: entranceCX, y: entranceCY,
+        x: stairsX, y: stairsY,
         target: 'town', spawnX: 12, spawnY: 1,
         isStairsUp: true,
       });
