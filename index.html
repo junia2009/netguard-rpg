@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>NETGUARD:// - サイバーアクションRPG</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="game-container">
+  <!-- タイトル画面 -->
+  <div id="title-screen">
+    <h1>NETGUARD://</h1>
+    <p class="subtitle">〜 電脳防衛戦記 〜</p>
+    <div class="menu-options">
+      <button id="btn-new-game">はじめから</button>
+      <button id="btn-continue" class="hidden">つづきから <span id="save-info"></span></button>
+    </div>
+    <p class="controls-hint controls-hint-pc">
+      移動: WASD / 矢印キー ｜ 攻撃: Space ｜ 会話: Enter<br>
+      アイテム使用: X ｜ インベントリ: I ｜ セーブ: Q
+    </p>
+    <p class="controls-hint controls-hint-mobile">
+      方向パッド: 移動 ｜ ATK: 攻撃 ｜ ACT: 会話/決定<br>
+      ITM: アイテム ｜ INV: インベントリ ｜ SAV: セーブ
+    </p>
+  </div>
+
+  <!-- ゲームキャンバス -->
+  <canvas id="game-canvas" width="800" height="600"></canvas>
+
+  <!-- HUD -->
+  <div id="hud" class="hidden">
+    <div id="hud-bars">
+      <div class="bar-container">
+        <span class="bar-label">HP</span>
+        <div class="bar hp-bar"><div class="bar-fill hp-fill" id="hp-fill"></div></div>
+        <span class="bar-text" id="hp-text">100/100</span>
+      </div>
+      <div class="bar-container">
+        <span class="bar-label">MP</span>
+        <div class="bar mp-bar"><div class="bar-fill mp-fill" id="mp-fill"></div></div>
+        <span class="bar-text" id="mp-text">50/50</span>
+      </div>
+      <div class="bar-container">
+        <span class="bar-label">EXP</span>
+        <div class="bar exp-bar"><div class="bar-fill exp-fill" id="exp-fill"></div></div>
+        <span class="bar-text" id="exp-text">0/100</span>
+      </div>
+    </div>
+    <div id="hud-info">
+      <span id="hud-level">Lv.1</span>
+      <span id="hud-gold">◆ 0G</span>
+      <span id="hud-map">⬡ ホームサーバー</span>
+    </div>
+  </div>
+
+  <!-- ダイアログ -->
+  <div id="dialogue-box" class="hidden">
+    <div id="dialogue-name"></div>
+    <div id="dialogue-text"></div>
+    <div id="dialogue-choices"></div>
+    <div id="dialogue-next">▼ Enter</div>
+  </div>
+
+  <!-- インベントリ画面 -->
+  <div id="inventory-screen" class="hidden overlay">
+    <div class="overlay-panel">
+      <h2>インベントリ</h2>
+      <div id="inventory-tabs">
+        <button class="tab active" data-tab="items">アイテム</button>
+        <button class="tab" data-tab="equip">装備</button>
+        <button class="tab" data-tab="status">ステータス</button>
+      </div>
+      <div id="inventory-content"></div>
+      <button class="close-btn" id="close-inventory">閉じる (I)</button>
+    </div>
+  </div>
+
+  <!-- ショップ画面 -->
+  <div id="shop-screen" class="hidden overlay">
+    <div class="overlay-panel">
+      <h2 id="shop-title">ショップ</h2>
+      <div id="shop-gold">所持金: 0G</div>
+      <div id="shop-content"></div>
+      <button class="close-btn" id="close-shop">閉じる</button>
+    </div>
+  </div>
+
+  <!-- ゲームオーバー -->
+  <div id="gameover-screen" class="hidden overlay">
+    <div class="overlay-panel gameover">
+      <h2>GAME OVER</h2>
+      <p>プログラムがクラッシュしました...</p>
+      <button id="btn-retry">ホームサーバーに再起動</button>
+    </div>
+  </div>
+
+  <!-- レベルアップ通知 -->
+  <div id="levelup-notification" class="hidden">
+    <span>⬆ LEVEL UP!</span>
+  </div>
+
+  <!-- ダメージ数字コンテナ -->
+  <div id="damage-numbers"></div>
+
+  <!-- ボス HP バー -->
+  <div id="boss-hp-bar" class="hidden">
+    <div id="boss-name">ゼロデイ</div>
+    <div class="bar boss-bar"><div class="bar-fill boss-fill" id="boss-hp-fill"></div></div>
+  </div>
+
+  <!-- タッチコントロール -->
+  <div id="touch-controls" class="hidden">
+    <div id="touch-dpad">
+      <button class="dpad-btn" data-dir="up">▲</button>
+      <div class="dpad-mid-row">
+        <button class="dpad-btn" data-dir="left">◀</button>
+        <button class="dpad-btn dpad-center" data-dir="none" aria-label="center"></button>
+        <button class="dpad-btn" data-dir="right">▶</button>
+      </div>
+      <button class="dpad-btn" data-dir="down">▼</button>
+    </div>
+    <div id="touch-action-btns">
+      <button class="action-btn" id="btn-touch-attack">ATK</button>
+      <button class="action-btn" id="btn-touch-interact">ACT</button>
+      <button class="action-btn action-btn-sm" id="btn-touch-item">ITM</button>
+      <button class="action-btn action-btn-sm" id="btn-touch-inv">INV</button>
+      <button class="action-btn action-btn-sm" id="btn-touch-save">SAV</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/combat.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>

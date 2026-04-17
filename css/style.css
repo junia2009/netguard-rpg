@@ -1,0 +1,738 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #050510;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-family: 'Consolas', 'Monaco', 'メイリオ', monospace;
+  overflow: hidden;
+}
+
+#game-container {
+  position: relative;
+  width: 800px;
+  height: 600px;
+  background: #000;
+  border: 2px solid #00ccff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+}
+
+#game-canvas {
+  display: block;
+}
+
+/* --- タイトル画面 --- */
+#title-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(180deg, #000510 0%, #001020 40%, #000a15 100%);
+  z-index: 100;
+}
+
+#title-screen h1 {
+  font-size: 42px;
+  color: #00ffcc;
+  text-shadow: 0 0 20px #00ccff, 0 0 40px #0066ff;
+  letter-spacing: 6px;
+  margin-bottom: 8px;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #0088aa;
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+}
+
+.menu-options button {
+  display: block;
+  width: 220px;
+  padding: 12px;
+  margin: 8px auto;
+  font-size: 16px;
+  background: rgba(0, 200, 255, 0.08);
+  color: #00ccff;
+  border: 1px solid #00ccff;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Consolas', 'Monaco', monospace;
+  letter-spacing: 2px;
+}
+
+.menu-options button:hover {
+  background: rgba(0, 200, 255, 0.25);
+  box-shadow: 0 0 15px rgba(0, 200, 255, 0.4);
+  transform: scale(1.05);
+}
+
+#btn-continue #save-info {
+  display: block;
+  font-size: 11px;
+  color: #0088aa;
+  margin-top: 2px;
+}
+
+.controls-hint {
+  position: absolute;
+  bottom: 20px;
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+  line-height: 1.8;
+}
+
+/* --- HUD --- */
+#hud {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 10;
+}
+
+#hud-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bar-container {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bar-label {
+  color: #fff;
+  font-size: 11px;
+  font-weight: bold;
+  width: 28px;
+  text-align: right;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.bar {
+  width: 150px;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.hp-fill { background: linear-gradient(180deg, #ff4444, #cc0000); }
+.mp-fill { background: linear-gradient(180deg, #4488ff, #0044cc); }
+.exp-fill { background: linear-gradient(180deg, #44ff44, #00aa00); }
+
+.bar-text {
+  color: #fff;
+  font-size: 10px;
+  width: 55px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+#hud-info {
+  display: flex;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+#hud-info span {
+  color: #fff;
+  font-size: 13px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+#hud-level { color: #00ffcc; font-weight: bold; }
+
+/* --- ダイアログ --- */
+#dialogue-box {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  background: rgba(0, 0, 20, 0.92);
+  border: 2px solid #668;
+  border-radius: 8px;
+  padding: 16px;
+  z-index: 50;
+  min-height: 100px;
+}
+
+#dialogue-name {
+  color: #00ffcc;
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+#dialogue-text {
+  color: #eee;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 48px;
+}
+
+#dialogue-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.dialogue-choice {
+  padding: 6px 12px;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid #664;
+  border-radius: 4px;
+  color: #eee;
+  cursor: pointer;
+  font-size: 14px;
+  text-align: left;
+}
+
+.dialogue-choice:hover, .dialogue-choice.selected {
+  background: rgba(0, 200, 255, 0.2);
+  border-color: #00ccff;
+}
+
+#dialogue-next {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+  color: #888;
+  font-size: 12px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0.3; }
+}
+
+/* --- オーバーレイ共通 --- */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 60;
+}
+
+.overlay-panel {
+  background: #1a1a2e;
+  border: 2px solid #555;
+  border-radius: 8px;
+  padding: 24px;
+  width: 600px;
+  max-height: 500px;
+  color: #eee;
+  overflow-y: auto;
+}
+
+.overlay-panel h2 {
+  color: #00ffcc;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.close-btn {
+  display: block;
+  margin: 16px auto 0;
+  padding: 8px 24px;
+  background: #333;
+  color: #fff;
+  border: 1px solid #666;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.close-btn:hover {
+  background: #555;
+}
+
+/* --- インベントリ --- */
+#inventory-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px;
+  background: #222;
+  color: #aaa;
+  border: 1px solid #444;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.tab.active {
+  background: #112;
+  color: #00ccff;
+  border-color: #00ccff;
+}
+
+#inventory-content {
+  min-height: 250px;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #333;
+}
+
+.item-row:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.item-name {
+  font-size: 14px;
+}
+
+.item-count {
+  color: #888;
+  font-size: 12px;
+}
+
+.item-btn {
+  padding: 4px 12px;
+  background: #335;
+  color: #8bf;
+  border: 1px solid #558;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.item-btn:hover {
+  background: #447;
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #222;
+  font-size: 14px;
+}
+
+.stat-label { color: #aaa; }
+.stat-value { color: #fff; font-weight: bold; }
+
+.equip-slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: #222;
+  border-radius: 4px;
+  border: 1px solid #444;
+}
+
+.equip-slot-name { color: #aaa; font-size: 12px; }
+.equip-item-name { color: #00ccff; font-size: 14px; }
+
+/* --- ショップ --- */
+#shop-gold {
+  text-align: right;
+  color: #00ffcc;
+  margin-bottom: 12px;
+}
+
+.shop-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  border-bottom: 1px solid #333;
+}
+
+.shop-item-info {
+  flex: 1;
+}
+
+.shop-item-name {
+  font-size: 14px;
+  color: #fff;
+}
+
+.shop-item-desc {
+  font-size: 11px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.shop-item-price {
+  color: #00ffcc;
+  margin: 0 16px;
+  min-width: 60px;
+  text-align: right;
+}
+
+.shop-buy-btn {
+  padding: 6px 16px;
+  background: #353;
+  color: #8f8;
+  border: 1px solid #585;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.shop-buy-btn:hover { background: #474; }
+.shop-buy-btn:disabled { opacity: 0.4; cursor: default; }
+
+/* --- ゲームオーバー --- */
+.gameover h2 {
+  font-size: 36px;
+  color: #ff4444;
+  text-shadow: 0 0 20px #ff0000;
+}
+
+.gameover p {
+  text-align: center;
+  margin: 16px 0 24px;
+  color: #aaa;
+}
+
+.gameover button {
+  display: block;
+  margin: 0 auto;
+  padding: 12px 32px;
+  font-size: 16px;
+  background: #533;
+  color: #faa;
+  border: 1px solid #855;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.gameover button:hover { background: #744; }
+
+/* --- ボスHPバー --- */
+#boss-hp-bar {
+  position: absolute;
+  bottom: 130px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#boss-name {
+  color: #ff4444;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  text-shadow: 1px 1px 3px #000;
+}
+
+.boss-bar {
+  width: 100%;
+  height: 18px;
+}
+
+.boss-fill {
+  background: linear-gradient(180deg, #ff6666, #cc0000);
+}
+
+/* --- レベルアップ通知 --- */
+#levelup-notification {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 40;
+  pointer-events: none;
+}
+
+#levelup-notification span {
+  font-size: 32px;
+  font-weight: bold;
+  color: #00ffcc;
+  text-shadow: 0 0 20px #00ccff, 0 0 40px #0066ff;
+  animation: levelup-anim 2s forwards;
+}
+
+@keyframes levelup-anim {
+  0% { opacity: 0; transform: scale(0.5); }
+  20% { opacity: 1; transform: scale(1.3); }
+  40% { transform: scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-40px); }
+}
+
+/* --- ダメージ数字 --- */
+#damage-numbers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.damage-num {
+  position: absolute;
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: 1px 1px 2px #000;
+  animation: damage-float 1s forwards;
+  pointer-events: none;
+}
+
+.damage-num.player-damage { color: #ff4444; }
+.damage-num.enemy-damage { color: #ffff44; }
+.damage-num.heal { color: #44ff44; }
+.damage-num.miss { color: #888; font-size: 14px; }
+
+@keyframes damage-float {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-40px); }
+}
+
+/* --- ユーティリティ --- */
+.hidden { display: none !important; }
+
+/* --- ミニマップ --- */
+#minimap {
+  position: absolute;
+  top: 60px;
+  right: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* --- タッチコントロール --- */
+#touch-controls {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  background: rgba(0, 5, 15, 0.92);
+  border-top: 1px solid rgba(0, 200, 255, 0.2);
+  z-index: 200;
+  touch-action: none;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+#touch-dpad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.dpad-mid-row {
+  display: flex;
+  gap: 2px;
+}
+
+.dpad-btn {
+  width: 48px;
+  height: 48px;
+  background: rgba(0, 200, 255, 0.1);
+  border: 1px solid rgba(0, 200, 255, 0.4);
+  border-radius: 6px;
+  color: #00ccff;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.dpad-btn:active {
+  background: rgba(0, 200, 255, 0.35);
+  border-color: #00ffcc;
+}
+
+.dpad-center {
+  background: rgba(0, 50, 80, 0.3);
+  border-color: transparent;
+}
+
+#touch-action-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+  align-items: center;
+  max-width: 200px;
+}
+
+.action-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(0, 200, 255, 0.12);
+  border: 2px solid rgba(0, 200, 255, 0.5);
+  color: #00ffcc;
+  font-size: 11px;
+  font-weight: bold;
+  font-family: 'Consolas', 'Monaco', monospace;
+  letter-spacing: 1px;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.action-btn:active {
+  background: rgba(0, 255, 200, 0.3);
+  border-color: #00ffcc;
+}
+
+.action-btn-sm {
+  width: 42px;
+  height: 42px;
+  font-size: 9px;
+  border-width: 1px;
+}
+
+/* --- モバイル対応 --- */
+.controls-hint-mobile {
+  display: none;
+}
+
+@media (max-width: 840px), (hover: none) and (pointer: coarse) {
+  body {
+    align-items: flex-start;
+  }
+
+  #game-container {
+    width: 100vw !important;
+    height: calc(100vh - 140px) !important;
+    height: calc(100dvh - 140px) !important;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  #game-canvas {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* HUD adjustments */
+  .bar {
+    width: 100px;
+  }
+
+  .bar-text {
+    width: 45px;
+    font-size: 9px;
+  }
+
+  .bar-label {
+    font-size: 9px;
+    width: 22px;
+  }
+
+  #hud-info {
+    gap: 6px;
+    padding: 3px 6px;
+  }
+
+  #hud-info span {
+    font-size: 10px;
+  }
+
+  /* Dialogue */
+  #dialogue-box {
+    bottom: 8px;
+    left: 8px;
+    right: 8px;
+    padding: 10px;
+    min-height: 70px;
+  }
+
+  #dialogue-text {
+    font-size: 13px;
+    min-height: 36px;
+  }
+
+  /* Overlay panels */
+  .overlay-panel {
+    width: calc(100vw - 32px);
+    max-height: calc(100vh - 180px);
+    max-height: calc(100dvh - 180px);
+    padding: 16px;
+  }
+
+  /* Boss HP */
+  #boss-hp-bar {
+    width: 70%;
+    bottom: 90px;
+  }
+
+  /* Title screen */
+  #title-screen h1 {
+    font-size: 28px;
+    letter-spacing: 3px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+
+  .menu-options button {
+    width: 180px;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .controls-hint-pc {
+    display: none;
+  }
+  .controls-hint-mobile {
+    display: block;
+  }
+
+  /* Level up */
+  #levelup-notification span {
+    font-size: 24px;
+  }
+}
