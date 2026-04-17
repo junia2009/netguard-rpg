@@ -77,6 +77,7 @@ const Input = {
     };
     bindAction('btn-touch-attack', 'attack');
     bindAction('btn-touch-interact', 'interact');
+    bindAction('btn-touch-item', 'useItem');
     bindAction('btn-touch-inv', 'inventory');
     bindAction('btn-touch-save', 'save');
 

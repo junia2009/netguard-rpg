@@ -639,22 +639,27 @@ body {
   border: none;
 }
 
-/* --- A/Bボタン --- */
+/* --- A/B/Yボタン（三角配置） --- */
 #gb-ab {
   display: flex;
-  gap: 12px;
+  flex-direction: column;
   align-items: center;
-  transform: rotate(-15deg);
+  gap: 6px;
+}
+
+.ab-row {
+  display: flex;
+  gap: 14px;
 }
 
 .ab-btn {
-  width: 58px;
-  height: 58px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   background: #6b2050;
   border: 3px solid #8a3068;
   color: #eee;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: bold;
   font-family: 'Consolas', 'Monaco', monospace;
   touch-action: none;
@@ -669,8 +674,15 @@ body {
   transform: translateY(2px);
 }
 
-#btn-touch-interact {
-  margin-top: 16px;
+#btn-touch-item {
+  background: #1a5068;
+  border-color: #2a7090;
+  box-shadow: 0 3px 0 #0e3848, inset 0 1px 2px rgba(255,255,255,0.1);
+}
+
+#btn-touch-item:active {
+  background: #2a7090;
+  box-shadow: 0 1px 0 #0e3848;
 }
 
 /* --- START/SAVEボタン --- */
