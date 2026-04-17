@@ -297,6 +297,8 @@ class Game {
         Camera.follow(this.player);
         Camera.x = Camera.targetX;
         Camera.y = Camera.targetY;
+        // Auto-save after dungeon clear
+        this.saveGame();
       });
     }, 1000);
   }
