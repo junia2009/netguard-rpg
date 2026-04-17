@@ -184,10 +184,13 @@ class Game {
     // Gate: north exit requires bossDefeated
     if (portal.target === 'random_dungeon') {
       if (!this.player.bossDefeated) {
-        UI.startDialogue('dungeon_gate_locked');
-        // Push player away from portal to avoid re-trigger
+        if (!UI.dialogueActive) {
+          UI.startDialogue('dungeon_gate_locked');
+        }
+        // Push player well away from portal to avoid re-trigger
         const ts = GameData.TILE_SIZE;
-        this.player.y = portal.y * ts + ts + ts / 2;
+        this.player.y = portal.y * ts + ts * 2 + ts / 2;
+        Camera.follow(this.player);
         return;
       }
       // Enter random dungeon floor 1
