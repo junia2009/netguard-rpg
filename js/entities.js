@@ -318,8 +318,9 @@ class Player {
 
 // --- エネミー ---
 class Enemy {
-  constructor(type, x, y) {
+  constructor(type, x, y, scaleFactor) {
     const data = GameData.ENEMIES[type];
+    const s = scaleFactor || 1;
     this.type = type;
     this.x = x;
     this.y = y;
@@ -328,13 +329,13 @@ class Enemy {
     this.name = data.name;
     this.sprite = data.sprite;
     this.color = data.color;
-    this.hp = data.hp;
-    this.maxHp = data.hp;
-    this.atk = data.atk;
-    this.def = data.def;
+    this.hp = Math.round(data.hp * s);
+    this.maxHp = Math.round(data.hp * s);
+    this.atk = Math.round(data.atk * s);
+    this.def = Math.round(data.def * s);
     this.spd = data.spd;
-    this.exp = data.exp;
-    this.gold = data.gold;
+    this.exp = Math.round(data.exp * s);
+    this.gold = Math.round(data.gold * s);
     this.size = data.size;
     this.aggroRange = data.aggroRange;
     this.attackRange = data.attackRange;

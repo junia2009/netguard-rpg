@@ -168,11 +168,22 @@ class Game {
 
     // Load enemies
     this.enemies = [];
+    // Calculate scale factor for random dungeon enemies based on player level
+    let scaleFactor = 1;
+    if (this.dungeonState && this.dungeonState.active && mapId.startsWith('rdungeon_')) {
+      const playerLevel = this.dungeonState.entryLevel || 1;
+      // Base scale: each player level above 5 adds 15% enemy strength
+      // Floor depth also adds scaling
+      const levelScale = 1 + Math.max(0, playerLevel - 5) * 0.15;
+      const floorScale = 1 + (this.dungeonState.floor - 1) * 0.1;
+      scaleFactor = levelScale * floorScale;
+    }
     map.enemies.forEach(eData => {
       const enemy = new Enemy(
         eData.type,
         eData.x * ts + ts / 2,
-        eData.y * ts + ts / 2
+        eData.y * ts + ts / 2,
+        scaleFactor
       );
       this.enemies.push(enemy);
     });
@@ -233,7 +244,12 @@ class Game {
   enterRandomDungeon() {
     DungeonGenerator.cleanup();
     const totalFloors = DungeonGenerator.TOTAL_FLOORS;
-    this.dungeonState = { active: true, floor: 1, totalFloors };
+    this.dungeonState = {
+      active: true,
+      floor: 1,
+      totalFloors,
+      entryLevel: this.player.level,
+    };
 
     const result = DungeonGenerator.generate(1, totalFloors);
     GameData.MAPS[result.id] = result.map;
