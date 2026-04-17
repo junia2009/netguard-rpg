@@ -556,10 +556,12 @@ body {
   font-size: 18px;
   font-family: 'Consolas', 'Monaco', monospace;
   text-align: center;
-  line-height: 2;
-  padding: 20px;
+  line-height: 2.2;
+  padding: 20px 24px;
   opacity: 0;
   transition: opacity 1.5s ease-in;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 #ending-message.visible {
@@ -850,6 +852,13 @@ body {
   #dialogue-text {
     font-size: 13px;
     min-height: 36px;
+  }
+
+  /* Ending epilogue */
+  #ending-message {
+    font-size: 15px;
+    line-height: 2;
+    padding: 16px 16px;
   }
 
   /* Overlay panels */
