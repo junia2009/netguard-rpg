@@ -164,6 +164,100 @@ class Game {
     }, 1000);
   }
 
+  startEnding() {
+    this.state = 'ending';
+    document.getElementById('hud').classList.add('hidden');
+
+    const screen = document.getElementById('ending-screen');
+    const msg = document.getElementById('ending-message');
+    const creditsRoll = document.getElementById('credits-roll');
+    const creditsContent = document.getElementById('credits-content');
+    const btnTitle = document.getElementById('btn-ending-title');
+
+    screen.classList.remove('hidden');
+
+    // Phase 1: Epilogue text (fade in line by line)
+    const lines = [
+      'ゼロデイウイルスは完全に無力化された。',
+      '',
+      'ネットワークは平穏を取り戻し、',
+      'データの流れが正常に戻っていく。',
+      '',
+      'あなたの活躍は',
+      'マスターAIのログに永久保存され、',
+      'すべてのプログラムに語り継がれるだろう。',
+      '',
+      '電脳世界に、再び光が満ちた——',
+    ];
+
+    msg.innerHTML = '';
+    msg.classList.add('visible');
+
+    let lineIdx = 0;
+    const typeTimer = setInterval(() => {
+      if (lineIdx >= lines.length) {
+        clearInterval(typeTimer);
+        // Phase 2: Fade out epilogue, start credits roll
+        setTimeout(() => {
+          msg.style.transition = 'opacity 2s';
+          msg.classList.remove('visible');
+
+          setTimeout(() => {
+            msg.style.display = 'none';
+            creditsRoll.classList.add('visible');
+
+            // Start scrolling credits
+            const screenH = screen.clientHeight;
+            const contentH = creditsContent.scrollHeight;
+            creditsContent.style.top = screenH + 'px';
+
+            const scrollSpeed = 0.6; // pixels per frame
+            let pos = screenH;
+
+            const scrollAnim = () => {
+              pos -= scrollSpeed;
+              creditsContent.style.transform = `translateY(${pos - screenH}px)`;
+
+              if (pos > -contentH) {
+                requestAnimationFrame(scrollAnim);
+              } else {
+                // Credits finished, show return button
+                btnTitle.classList.remove('hidden');
+                setTimeout(() => btnTitle.classList.add('visible'), 100);
+              }
+            };
+            requestAnimationFrame(scrollAnim);
+          }, 2000);
+        }, 2000);
+        return;
+      }
+
+      if (lines[lineIdx] === '') {
+        msg.innerHTML += '<br>';
+      } else {
+        msg.innerHTML += lines[lineIdx] + '<br>';
+      }
+      lineIdx++;
+    }, 800);
+
+    // Return to title button
+    btnTitle.addEventListener('click', () => {
+      screen.classList.add('hidden');
+      msg.style.display = '';
+      msg.innerHTML = '';
+      msg.classList.remove('visible');
+      msg.style.transition = '';
+      creditsRoll.classList.remove('visible');
+      creditsContent.style.transform = '';
+      btnTitle.classList.add('hidden');
+      btnTitle.classList.remove('visible');
+
+      this.state = 'title';
+      document.getElementById('title-screen').classList.remove('hidden');
+      this.updateContinueButton();
+    }, { once: true });
+  }
+
   // --- メインループ ---
   loop(timestamp) {
     const dt = Math.min((timestamp - this.lastTime) / 1000, 0.05); // Cap at 50ms
@@ -281,11 +375,13 @@ class Game {
     for (const npc of this.npcs) {
       if (npc.isNear(this.player.x, this.player.y)) {
         let dialogueId = npc.dialogue;
-        // Special case: elder after boss defeat
+        let callback = null;
+        // Special case: elder after boss defeat → trigger ending
         if (npc.id === 'elder' && this.player.bossDefeated) {
           dialogueId = 'elder_after';
+          callback = () => this.startEnding();
         }
-        UI.startDialogue(dialogueId);
+        UI.startDialogue(dialogueId, callback);
         return;
       }
     }

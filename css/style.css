@@ -538,6 +538,109 @@ body {
   pointer-events: none;
 }
 
+/* --- エンディング画面 --- */
+#ending-screen {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 300;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#ending-message {
+  color: #00ccff;
+  font-size: 18px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  text-align: center;
+  line-height: 2;
+  padding: 20px;
+  opacity: 0;
+  transition: opacity 1.5s ease-in;
+}
+
+#ending-message.visible {
+  opacity: 1;
+}
+
+#credits-roll {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+
+#credits-roll.visible {
+  opacity: 1;
+}
+
+#credits-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Consolas', 'Monaco', monospace;
+  color: #ccc;
+  will-change: transform;
+}
+
+.credits-title {
+  font-size: 32px;
+  color: #00ccff;
+  font-weight: bold;
+  letter-spacing: 4px;
+  text-shadow: 0 0 20px rgba(0, 200, 255, 0.5);
+  margin-bottom: 8px;
+}
+
+.credits-subtitle {
+  font-size: 16px;
+  color: #00ffcc;
+  margin-bottom: 16px;
+}
+
+.credits-heading {
+  font-size: 18px;
+  color: #00ccff;
+  font-weight: bold;
+  margin: 24px 0 12px;
+  letter-spacing: 3px;
+}
+
+.credits-item {
+  font-size: 14px;
+  color: #aab;
+  line-height: 2;
+}
+
+#btn-ending-title {
+  position: absolute;
+  bottom: 60px;
+  z-index: 310;
+  background: transparent;
+  border: 2px solid #00ccff;
+  color: #00ccff;
+  padding: 12px 32px;
+  font-size: 16px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  cursor: pointer;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+
+#btn-ending-title.visible {
+  opacity: 1;
+}
+
+#btn-ending-title:hover {
+  background: rgba(0, 200, 255, 0.15);
+}
+
 /* --- タッチコントロール（ゲームボーイ風） --- */
 #touch-controls {
   position: fixed;
