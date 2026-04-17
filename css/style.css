@@ -686,7 +686,7 @@ body {
 
   #game-container {
     width: calc(100vw - 12px) !important;
-    margin: 6px auto 0 auto;
+    margin: calc(40px + env(safe-area-inset-top, 0px)) auto 0 auto;
     border: none;
     border-radius: 8px;
     box-shadow: inset 0 0 8px rgba(0,0,0,0.3);

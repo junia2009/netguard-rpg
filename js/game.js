@@ -54,8 +54,9 @@ class Game {
       const touchEl = document.getElementById('touch-controls');
       const touchH = touchEl ? touchEl.offsetHeight : 180;
       const bezel = 12; // 6px margin each side
+      const topMargin = Math.max(40, parseInt(getComputedStyle(document.documentElement).getPropertyValue('env(safe-area-inset-top)')) || 40);
       const gameW = vw - bezel;
-      const gameH = vh - touchH - 6; // 6px top margin
+      const gameH = vh - touchH - topMargin;
       container.style.width = gameW + 'px';
       container.style.height = gameH + 'px';
       this.canvas.width = gameW;
