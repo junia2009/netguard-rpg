@@ -44,19 +44,62 @@ const Input = {
     document.querySelectorAll('.controls-hint-pc').forEach(el => el.style.display = 'none');
     document.querySelectorAll('.controls-hint-mobile').forEach(el => el.style.display = 'block');
 
-    // D-pad buttons
-    document.querySelectorAll('.dpad-btn').forEach(btn => {
-      const dir = btn.dataset.dir;
-      const setDir = (active) => {
-        if (dir === 'up')    this.touchDir.y = active ? -1 : 0;
-        if (dir === 'down')  this.touchDir.y = active ? 1 : 0;
-        if (dir === 'left')  this.touchDir.x = active ? -1 : 0;
-        if (dir === 'right') this.touchDir.x = active ? 1 : 0;
-      };
-      btn.addEventListener('touchstart', (e) => { e.preventDefault(); setDir(true); });
-      btn.addEventListener('touchend', (e) => { e.preventDefault(); setDir(false); });
-      btn.addEventListener('touchcancel', (e) => { e.preventDefault(); setDir(false); });
+    // Virtual joystick
+    const joyZone = document.getElementById('joystick-zone');
+    const joyBase = document.getElementById('joystick-base');
+    const joyThumb = document.getElementById('joystick-thumb');
+    let joyActive = false;
+    let joyCenterX = 0, joyCenterY = 0;
+    const joyRadius = 50; // max thumb displacement
+    const deadZone = 10;
+
+    const updateJoy = (tx, ty) => {
+      const dx = tx - joyCenterX;
+      const dy = ty - joyCenterY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      // Clamp to radius
+      const clampDist = Math.min(dist, joyRadius);
+      const angle = Math.atan2(dy, dx);
+      const cx = clampDist * Math.cos(angle);
+      const cy = clampDist * Math.sin(angle);
+      // Move thumb visually
+      joyThumb.style.transform = `translate(calc(-50% + ${cx}px), calc(-50% + ${cy}px))`;
+      // Set direction with dead zone
+      if (dist < deadZone) {
+        this.touchDir.x = 0;
+        this.touchDir.y = 0;
+      } else {
+        this.touchDir.x = cx / joyRadius;
+        this.touchDir.y = cy / joyRadius;
+      }
+    };
+
+    const resetJoy = () => {
+      joyActive = false;
+      this.touchDir.x = 0;
+      this.touchDir.y = 0;
+      joyThumb.style.transform = 'translate(-50%, -50%)';
+    };
+
+    joyZone.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      joyActive = true;
+      const rect = joyBase.getBoundingClientRect();
+      joyCenterX = rect.left + rect.width / 2;
+      joyCenterY = rect.top + rect.height / 2;
+      const t = e.touches[0];
+      updateJoy(t.clientX, t.clientY);
     });
+
+    joyZone.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (!joyActive) return;
+      const t = e.touches[0];
+      updateJoy(t.clientX, t.clientY);
+    });
+
+    joyZone.addEventListener('touchend', (e) => { e.preventDefault(); resetJoy(); });
+    joyZone.addEventListener('touchcancel', (e) => { e.preventDefault(); resetJoy(); });
 
     // Action buttons
     const bindAction = (id, action) => {
@@ -105,10 +148,11 @@ const Input = {
     }
     this._prev = { ...this.keys };
 
-    // Touch direction "just pressed" tracking
+    // Touch direction "just pressed" tracking (threshold for joystick)
+    const dirThreshold = 0.3;
     this._touchDirJust = {
-      up: this.touchDir.y < 0 && !(this._prevTouchDir?.y < 0),
-      down: this.touchDir.y > 0 && !(this._prevTouchDir?.y > 0),
+      up: this.touchDir.y < -dirThreshold && !(this._prevTouchDir?.y < -dirThreshold),
+      down: this.touchDir.y > dirThreshold && !(this._prevTouchDir?.y > dirThreshold),
     };
     this._prevTouchDir = { x: this.touchDir.x, y: this.touchDir.y };
 

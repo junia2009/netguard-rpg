@@ -562,81 +562,38 @@ body {
   margin-bottom: 8px;
 }
 
-/* --- 十字キー --- */
-#gb-dpad {
-  width: 130px;
-  height: 130px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dpad-cross {
-  display: grid;
-  grid-template-columns: 42px 42px 42px;
-  grid-template-rows: 42px 42px 42px;
-  gap: 0;
-}
-
-.dpad-btn {
-  background: #252540;
-  border: none;
-  color: #556;
-  font-size: 14px;
+/* --- バーチャルジョイスティック --- */
+#joystick-zone {
+  width: 140px;
+  height: 140px;
   display: flex;
   align-items: center;
   justify-content: center;
   touch-action: none;
-  -webkit-user-select: none;
-  user-select: none;
 }
 
-.dpad-btn:active {
-  background: #3a3a60;
-  color: #00ccff;
+#joystick-base {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #1a1a30 0%, #151528 70%, #101020 100%);
+  border: 2px solid #2a2a48;
+  position: relative;
+  box-shadow: inset 0 2px 8px rgba(0,0,0,0.5);
 }
 
-.dpad-up {
-  grid-column: 2;
-  grid-row: 1;
-  border-radius: 6px 6px 0 0;
-  border-top: 2px solid #333;
-  border-left: 2px solid #333;
-  border-right: 2px solid #333;
-}
-
-.dpad-down {
-  grid-column: 2;
-  grid-row: 3;
-  border-radius: 0 0 6px 6px;
-  border-bottom: 2px solid #333;
-  border-left: 2px solid #333;
-  border-right: 2px solid #333;
-}
-
-.dpad-left {
-  grid-column: 1;
-  grid-row: 2;
-  border-radius: 6px 0 0 6px;
-  border-top: 2px solid #333;
-  border-bottom: 2px solid #333;
-  border-left: 2px solid #333;
-}
-
-.dpad-right {
-  grid-column: 3;
-  grid-row: 2;
-  border-radius: 0 6px 6px 0;
-  border-top: 2px solid #333;
-  border-bottom: 2px solid #333;
-  border-right: 2px solid #333;
-}
-
-.dpad-center-dot {
-  grid-column: 2;
-  grid-row: 2;
-  background: #252540;
-  border: none;
+#joystick-thumb {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 38%, #3a3a60, #252540);
+  border: 2px solid #4a4a70;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
 /* --- A/B/Yボタン（三角配置） --- */

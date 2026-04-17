@@ -23,7 +23,7 @@
       アイテム使用: X ｜ インベントリ: I ｜ セーブ: Q
     </p>
     <p class="controls-hint controls-hint-mobile">
-      十字キー: 移動 ｜ A: 攻撃 ｜ B: 会話/決定 ｜ Y: アイテム<br>
+      スティック: 移動 ｜ A: 攻撃 ｜ B: 会話/決定 ｜ Y: アイテム<br>
       SAVE: セーブ ｜ MENU: インベントリ
     </p>
   </div>
@@ -116,14 +116,10 @@
   <div id="touch-controls" class="hidden">
     <div id="gb-body">
       <div id="gb-controls-row">
-        <!-- 十字キー -->
-        <div id="gb-dpad">
-          <div class="dpad-cross">
-            <button class="dpad-btn dpad-up" data-dir="up" aria-label="上">▲</button>
-            <button class="dpad-btn dpad-left" data-dir="left" aria-label="左">◀</button>
-            <div class="dpad-center-dot"></div>
-            <button class="dpad-btn dpad-right" data-dir="right" aria-label="右">▶</button>
-            <button class="dpad-btn dpad-down" data-dir="down" aria-label="下">▼</button>
+        <!-- バーチャルジョイスティック -->
+        <div id="joystick-zone">
+          <div id="joystick-base">
+            <div id="joystick-thumb"></div>
           </div>
         </div>
         <!-- A/B/Yボタン（三角配置） -->
