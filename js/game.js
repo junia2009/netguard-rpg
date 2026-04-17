@@ -187,12 +187,12 @@ class Game {
         }
       }
       if (UI.inventoryOpen) {
-        if (Input.inventory || Input.escape) {
+        if (Input.inventory || Input.escape || Input.interact) {
           UI.closeInventory();
         }
       }
       if (UI.shopOpen) {
-        if (Input.escape) {
+        if (Input.escape || Input.interact || Input.inventory) {
           UI.closeShop();
         }
       }

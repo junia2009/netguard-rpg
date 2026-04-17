@@ -76,7 +76,6 @@ const Input = {
       });
     };
     bindAction('btn-touch-attack', 'attack');
-    bindAction('btn-touch-attack', 'useItem');
     bindAction('btn-touch-interact', 'interact');
     bindAction('btn-touch-inv', 'inventory');
     bindAction('btn-touch-save', 'save');
@@ -84,6 +83,11 @@ const Input = {
     // Prevent zoom/scroll on the game area
     document.getElementById('game-container').addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
     document.getElementById('touch-controls').addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
+
+    // Allow overlay panels to scroll (stop propagation before game-container's preventDefault)
+    document.querySelectorAll('.overlay-panel').forEach(panel => {
+      panel.addEventListener('touchmove', (e) => e.stopPropagation(), { passive: true });
+    });
 
     // Prevent double-tap zoom
     let lastTap = 0;
@@ -99,6 +103,13 @@ const Input = {
       this.justPressed[code] = this.keys[code] && !this._prev[code];
     }
     this._prev = { ...this.keys };
+
+    // Touch direction "just pressed" tracking
+    this._touchDirJust = {
+      up: this.touchDir.y < 0 && !(this._prevTouchDir?.y < 0),
+      down: this.touchDir.y > 0 && !(this._prevTouchDir?.y > 0),
+    };
+    this._prevTouchDir = { x: this.touchDir.x, y: this.touchDir.y };
 
     // Touch action "just pressed" tracking
     this._touchJust = {};

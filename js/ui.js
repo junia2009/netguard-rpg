@@ -150,11 +150,11 @@ const UI = {
   handleDialogueInput() {
     if (!this.dialogueActive || !this.currentChoices) return;
 
-    if (Input.isJustPressed('ArrowUp') || Input.isJustPressed('KeyW')) {
+    if (Input.isJustPressed('ArrowUp') || Input.isJustPressed('KeyW') || Input._touchDirJust?.up) {
       this.selectedChoice = Math.max(0, this.selectedChoice - 1);
       this.updateChoiceHighlight();
     }
-    if (Input.isJustPressed('ArrowDown') || Input.isJustPressed('KeyS')) {
+    if (Input.isJustPressed('ArrowDown') || Input.isJustPressed('KeyS') || Input._touchDirJust?.down) {
       this.selectedChoice = Math.min(this.currentChoices.length - 1, this.selectedChoice + 1);
       this.updateChoiceHighlight();
     }
