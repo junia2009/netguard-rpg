@@ -855,7 +855,7 @@ body {
   /* Overlay panels */
   .overlay-panel {
     width: calc(100vw - 32px);
-    max-height: 60vh;
+    max-height: calc(100% - 32px);
     padding: 16px;
   }
 
