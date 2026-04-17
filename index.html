@@ -37,30 +37,32 @@
 
   <!-- HUD -->
   <div id="hud" class="hidden">
-    <div id="hud-bars">
-      <div class="bar-container">
-        <span class="bar-label">HP</span>
-        <div class="bar hp-bar"><div class="bar-fill hp-fill" id="hp-fill"></div></div>
-        <span class="bar-text" id="hp-text">100/100</span>
+    <div id="hud-left">
+      <div id="hud-bars">
+        <div class="bar-container">
+          <span class="bar-label">HP</span>
+          <div class="bar hp-bar"><div class="bar-fill hp-fill" id="hp-fill"></div></div>
+          <span class="bar-text" id="hp-text">100/100</span>
+        </div>
+        <div class="bar-container">
+          <span class="bar-label">MP</span>
+          <div class="bar mp-bar"><div class="bar-fill mp-fill" id="mp-fill"></div></div>
+          <span class="bar-text" id="mp-text">50/50</span>
+        </div>
+        <div class="bar-container">
+          <span class="bar-label">EXP</span>
+          <div class="bar exp-bar"><div class="bar-fill exp-fill" id="exp-fill"></div></div>
+          <span class="bar-text" id="exp-text">0/100</span>
+        </div>
       </div>
-      <div class="bar-container">
-        <span class="bar-label">MP</span>
-        <div class="bar mp-bar"><div class="bar-fill mp-fill" id="mp-fill"></div></div>
-        <span class="bar-text" id="mp-text">50/50</span>
+      <div id="hud-info">
+        <span id="hud-level">Lv.1</span>
+        <span id="hud-gold">◆ 0G</span>
+        <span id="hud-map">⬡ ホームサーバー</span>
       </div>
-      <div class="bar-container">
-        <span class="bar-label">EXP</span>
-        <div class="bar exp-bar"><div class="bar-fill exp-fill" id="exp-fill"></div></div>
-        <span class="bar-text" id="exp-text">0/100</span>
-      </div>
+      <div id="hud-skill" class="hidden"></div>
+      <div id="hud-buffs" class="hidden"></div>
     </div>
-    <div id="hud-info">
-      <span id="hud-level">Lv.1</span>
-      <span id="hud-gold">◆ 0G</span>
-      <span id="hud-map">⬡ ホームサーバー</span>
-    </div>
-    <div id="hud-skill" class="hidden"></div>
-    <div id="hud-buffs" class="hidden"></div>
   </div>
 
   <!-- ダイアログ -->
@@ -183,7 +185,7 @@
         <button class="center-btn" id="btn-touch-save">SAVE</button>
         <button class="center-btn" id="btn-touch-inv">MENU</button>
         <button id="btn-bgm-toggle" class="center-btn" title="BGM ON/OFF">♫</button>
-        <span id="version-label">ver2.5.0</span>
+        <span id="version-label">ver2.5.1</span>
       </div>
     </div>
   </div>

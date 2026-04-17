@@ -101,11 +101,15 @@ body {
   top: 8px;
   left: 8px;
   right: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   pointer-events: none;
   z-index: 10;
+}
+
+#hud-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: flex-start;
 }
 
 #hud-bars {
