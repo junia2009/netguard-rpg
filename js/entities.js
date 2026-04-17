@@ -69,6 +69,14 @@ class Player {
     if (this.skillAnimTimer > 0) this.skillAnimTimer -= dt;
     if (this.buffDefTimer > 0) this.buffDefTimer -= dt;
     if (this.buffAtkTimer > 0) this.buffAtkTimer -= dt;
+    // MP自然回復 (1/秒)
+    if (this.mp < this.maxMp) {
+      this.mpRegenTimer = (this.mpRegenTimer || 0) + dt;
+      if (this.mpRegenTimer >= 1.0) {
+        this.mpRegenTimer -= 1.0;
+        this.mp = Math.min(this.maxMp, this.mp + 1);
+      }
+    }
     if (this.attacking) {
       this.attackTimer -= dt;
       if (this.attackTimer <= 0) this.attacking = false;
