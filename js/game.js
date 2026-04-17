@@ -179,19 +179,19 @@ class Game {
     if (UI.isOverlayOpen) {
       if (UI.dialogueActive) {
         UI.handleDialogueInput();
-        if (Input.interact || Input.attack) {
+        if (Input.interact) {
           UI.advanceDialogue();
+          // Consume input so it doesn't trigger close on newly opened overlay
+          return;
         }
         if (Input.escape) {
           UI.closeDialogue();
         }
-      }
-      if (UI.inventoryOpen) {
+      } else if (UI.inventoryOpen) {
         if (Input.inventory || Input.escape || Input.interact) {
           UI.closeInventory();
         }
-      }
-      if (UI.shopOpen) {
+      } else if (UI.shopOpen) {
         if (Input.escape || Input.interact || Input.inventory) {
           UI.closeShop();
         }
