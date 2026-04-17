@@ -748,7 +748,11 @@ body {
 }
 
 #btn-bgm-toggle {
-  background: none;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 200;
+  background: rgba(0,0,0,0.5);
   border: 1px solid #555;
   color: #00ffcc;
   font-size: 14px;
@@ -759,7 +763,6 @@ body {
   padding: 0;
   line-height: 28px;
   text-align: center;
-  margin-left: auto;
 }
 #btn-bgm-toggle.muted {
   color: #666;

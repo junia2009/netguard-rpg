@@ -4,6 +4,7 @@
 const Music = (() => {
   let ctx = null;
   let masterGain = null;
+  let muteGain = null;
   let currentTrack = null;
   let currentNodes = [];
   let muted = false;
@@ -15,7 +16,10 @@ const Music = (() => {
     ctx = new (window.AudioContext || window.webkitAudioContext)();
     masterGain = ctx.createGain();
     masterGain.gain.value = volume;
-    masterGain.connect(ctx.destination);
+    muteGain = ctx.createGain();
+    muteGain.gain.value = 1;
+    masterGain.connect(muteGain);
+    muteGain.connect(ctx.destination);
   }
 
   function resume() {
@@ -229,13 +233,24 @@ const Music = (() => {
     isPlaying = false;
     currentTrack = null;
     if (loopTimer) { clearTimeout(loopTimer); loopTimer = null; }
+    // Immediately stop all scheduled oscillators
+    const now = ctx ? ctx.currentTime : 0;
+    for (const node of currentNodes) {
+      try {
+        if (node.gain) {
+          node.gain.gain.cancelScheduledValues(now);
+          node.gain.gain.setValueAtTime(0, now);
+        }
+        if (node.osc) node.osc.stop(now + 0.02);
+      } catch (e) { /* already stopped */ }
+    }
     currentNodes = [];
   }
 
   function setMuted(m) {
     muted = m;
-    if (!masterGain) return;
-    masterGain.gain.value = muted ? 0 : volume;
+    if (!muteGain) return;
+    muteGain.gain.setValueAtTime(muted ? 0 : 1, ctx.currentTime);
   }
 
   function toggleMute() {
