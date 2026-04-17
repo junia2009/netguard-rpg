@@ -747,6 +747,25 @@ body {
   box-shadow: 0 1px 0 #0e3848;
 }
 
+#btn-bgm-toggle {
+  background: none;
+  border: 1px solid #555;
+  color: #00ffcc;
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 28px;
+  text-align: center;
+  margin-left: auto;
+}
+#btn-bgm-toggle.muted {
+  color: #666;
+  text-decoration: line-through;
+}
+
 /* --- START/SAVEボタン --- */
 #version-label {
   display: block;

@@ -36,8 +36,24 @@ class Game {
     document.getElementById('btn-continue').addEventListener('click', () => this.loadGame());
     document.getElementById('btn-retry').addEventListener('click', () => this.retry());
 
+    // BGM mute toggle
+    document.getElementById('btn-bgm-toggle').addEventListener('click', () => {
+      const muted = Music.toggleMute();
+      document.getElementById('btn-bgm-toggle').classList.toggle('muted', muted);
+    });
+
     // Update continue button visibility
     this.updateContinueButton();
+
+    // Init BGM on first user interaction
+    const initBGM = () => {
+      Music.init();
+      Music.playTitle();
+      document.removeEventListener('click', initBGM);
+      document.removeEventListener('touchstart', initBGM);
+    };
+    document.addEventListener('click', initBGM);
+    document.addEventListener('touchstart', initBGM);
 
     // Start render loop (for title screen animation)
     this.lastTime = performance.now();
@@ -88,6 +104,10 @@ class Game {
 
     this.loadMap('town');
 
+    // Start BGM for town
+    Music.init();
+    Music.playForMap('town');
+
     // Intro dialogue
     setTimeout(() => {
       UI.startDialogue('elder_intro');
@@ -119,6 +139,9 @@ class Game {
     this.currentMap = mapId;
     const map = GameData.MAPS[mapId];
     MapRenderer.loadMap(mapId);
+
+    // Play BGM for this map
+    Music.playForMap(mapId);
 
     // Position player
     const ts = GameData.TILE_SIZE;
@@ -178,6 +201,7 @@ class Game {
   startEnding() {
     this.state = 'ending';
     document.getElementById('hud').classList.add('hidden');
+    Music.stop();
 
     // Auto-save before ending so player can continue post-game
     this.player.endingCleared = true;
@@ -272,6 +296,7 @@ class Game {
 
       this.state = 'title';
       document.getElementById('title-screen').classList.remove('hidden');
+      Music.playTitle();
       this.updateContinueButton();
     }, { once: true });
   }
