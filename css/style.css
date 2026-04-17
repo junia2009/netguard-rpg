@@ -757,6 +757,7 @@ body {
   margin-top: 2px;
   font-family: monospace;
   pointer-events: none;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -787,8 +788,6 @@ body {
 .center-btn:active {
   background: #68686e;
   color: #222;
-}
-  color: #ccc;
 }
 
 /* --- モバイル対応 --- */
