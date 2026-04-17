@@ -5,8 +5,8 @@ const Music = (() => {
   let ctx = null;
   let masterGain = null;
   let muteGain = null;
+  let trackGain = null;  // Per-track gain node, disconnected on stop
   let currentTrack = null;
-  let currentNodes = [];
   let muted = false;
   let volume = 0.35;
   let isPlaying = false;
@@ -17,7 +17,7 @@ const Music = (() => {
     masterGain = ctx.createGain();
     masterGain.gain.value = volume;
     muteGain = ctx.createGain();
-    muteGain.gain.value = 1;
+    muteGain.gain.value = muted ? 0 : 1;
     masterGain.connect(muteGain);
     muteGain.connect(ctx.destination);
   }
@@ -43,7 +43,7 @@ const Music = (() => {
 
   // --- Oscillator factory ---
   function createOsc(type, frequency, gainVal, startTime, duration, detune) {
-    if (!ctx) return;
+    if (!ctx || !trackGain) return;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = type;
@@ -54,15 +54,14 @@ const Music = (() => {
     gain.gain.setValueAtTime(gainVal, startTime + duration * 0.7);
     gain.gain.linearRampToValueAtTime(0, startTime + duration);
     osc.connect(gain);
-    gain.connect(masterGain);
+    gain.connect(trackGain);
     osc.start(startTime);
     osc.stop(startTime + duration + 0.05);
-    return { osc, gain };
   }
 
   // --- Drum sounds ---
   function scheduleKick(time) {
-    if (!ctx) return;
+    if (!ctx || !trackGain) return;
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     osc.type = 'sine';
@@ -71,13 +70,13 @@ const Music = (() => {
     gain.gain.setValueAtTime(0.6, time);
     gain.gain.exponentialRampToValueAtTime(0.01, time + 0.2);
     osc.connect(gain);
-    gain.connect(masterGain);
+    gain.connect(trackGain);
     osc.start(time);
     osc.stop(time + 0.25);
   }
 
   function scheduleHihat(time, vol) {
-    if (!ctx) return;
+    if (!ctx || !trackGain) return;
     const bufferSize = ctx.sampleRate * 0.05;
     const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
     const data = buffer.getChannelData(0);
@@ -92,13 +91,12 @@ const Music = (() => {
     gain.gain.exponentialRampToValueAtTime(0.01, time + 0.05);
     src.connect(filter);
     filter.connect(gain);
-    gain.connect(masterGain);
+    gain.connect(trackGain);
     src.start(time);
   }
 
   function scheduleSnare(time) {
-    if (!ctx) return;
-    // Noise part
+    if (!ctx || !trackGain) return;
     const bufLen = ctx.sampleRate * 0.1;
     const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate);
     const d = buf.getChannelData(0);
@@ -113,9 +111,8 @@ const Music = (() => {
     filter.frequency.value = 3000;
     noise.connect(filter);
     filter.connect(nGain);
-    nGain.connect(masterGain);
+    nGain.connect(trackGain);
     noise.start(time);
-    // Tone part
     const osc = ctx.createOscillator();
     const oGain = ctx.createGain();
     osc.type = 'triangle';
@@ -124,16 +121,15 @@ const Music = (() => {
     oGain.gain.setValueAtTime(0.3, time);
     oGain.gain.exponentialRampToValueAtTime(0.01, time + 0.08);
     osc.connect(oGain);
-    oGain.connect(masterGain);
+    oGain.connect(trackGain);
     osc.start(time);
     osc.stop(time + 0.15);
   }
 
   // --- Track Scheduling ---
   function scheduleTrack(trackName, startTime) {
-    const nodes = [];
     const track = TRACKS[trackName];
-    if (!track) return { nodes, duration: 4 };
+    if (!track) return { duration: 4 };
     const bpm = track.bpm;
     const beatDur = 60 / bpm;
     const sixteenth = beatDur / 4;
@@ -144,8 +140,7 @@ const Music = (() => {
       for (const [note, beats] of track.melody) {
         const dur = beats * beatDur;
         if (note !== 'R') {
-          const n = createOsc(track.melodyWave || 'square', freq(note), track.melodyVol || 0.18, t, dur * 0.9, track.melodyDetune || 0);
-          if (n) nodes.push(n);
+          createOsc(track.melodyWave || 'square', freq(note), track.melodyVol || 0.18, t, dur * 0.9, track.melodyDetune || 0);
         }
         t += dur;
       }
@@ -157,8 +152,7 @@ const Music = (() => {
       for (const [note, beats] of track.harmony) {
         const dur = beats * beatDur;
         if (note !== 'R') {
-          const n = createOsc(track.harmonyWave || 'triangle', freq(note), track.harmonyVol || 0.1, t, dur * 0.9);
-          if (n) nodes.push(n);
+          createOsc(track.harmonyWave || 'triangle', freq(note), track.harmonyVol || 0.1, t, dur * 0.9);
         }
         t += dur;
       }
@@ -170,8 +164,7 @@ const Music = (() => {
       for (const [note, beats] of track.bass) {
         const dur = beats * beatDur;
         if (note !== 'R') {
-          const n = createOsc(track.bassWave || 'sawtooth', freq(note), track.bassVol || 0.15, t, dur * 0.85);
-          if (n) nodes.push(n);
+          createOsc(track.bassWave || 'sawtooth', freq(note), track.bassVol || 0.15, t, dur * 0.85);
         }
         t += dur;
       }
@@ -183,8 +176,7 @@ const Music = (() => {
       for (const [note, beats] of track.arp) {
         const dur = beats * beatDur;
         if (note !== 'R') {
-          const n = createOsc('square', freq(note), 0.07, t, dur * 0.6);
-          if (n) nodes.push(n);
+          createOsc('square', freq(note), 0.07, t, dur * 0.6);
         }
         t += dur;
       }
@@ -202,7 +194,7 @@ const Music = (() => {
       }
     }
 
-    return { nodes, duration: track.loopBeats * beatDur };
+    return { duration: track.loopBeats * beatDur };
   }
 
   // --- Looping ---
@@ -213,18 +205,20 @@ const Music = (() => {
     if (!ctx) init();
     resume();
     stopLoop();
+    // Create fresh trackGain for this track
+    trackGain = ctx.createGain();
+    trackGain.gain.value = 1;
+    trackGain.connect(masterGain);
     currentTrack = trackName;
     isPlaying = true;
-    nextScheduleTime = ctx.currentTime + 0.1;
+    nextScheduleTime = ctx.currentTime + 0.15;
     scheduleNext();
   }
 
   function scheduleNext() {
     if (!isPlaying || !currentTrack) return;
-    const { nodes, duration } = scheduleTrack(currentTrack, nextScheduleTime);
-    currentNodes.push(...nodes);
+    const { duration } = scheduleTrack(currentTrack, nextScheduleTime);
     nextScheduleTime += duration;
-    // Schedule next iteration ahead of time
     const delay = (nextScheduleTime - ctx.currentTime - 0.5) * 1000;
     loopTimer = setTimeout(() => scheduleNext(), Math.max(delay, 100));
   }
@@ -233,18 +227,11 @@ const Music = (() => {
     isPlaying = false;
     currentTrack = null;
     if (loopTimer) { clearTimeout(loopTimer); loopTimer = null; }
-    // Immediately stop all scheduled oscillators
-    const now = ctx ? ctx.currentTime : 0;
-    for (const node of currentNodes) {
-      try {
-        if (node.gain) {
-          node.gain.gain.cancelScheduledValues(now);
-          node.gain.gain.setValueAtTime(0, now);
-        }
-        if (node.osc) node.osc.stop(now + 0.02);
-      } catch (e) { /* already stopped */ }
+    // Disconnect trackGain to instantly silence all scheduled audio
+    if (trackGain) {
+      trackGain.disconnect();
+      trackGain = null;
     }
-    currentNodes = [];
   }
 
   function setMuted(m) {
