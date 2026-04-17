@@ -17,6 +17,9 @@ class Game {
 
     // Enemy respawn tracking
     this.enemyRespawnTimers = {};
+
+    // Random dungeon state
+    this.dungeonState = null; // { active, floor, totalFloors }
   }
 
   init() {
@@ -121,6 +124,10 @@ class Game {
     this.player.gold = Math.floor(this.player.gold / 2); // Lose half gold
     this.state = 'playing';
     UI.hideGameOver();
+    // Leave dungeon if in one
+    if (this.dungeonState) {
+      this.leaveDungeon();
+    }
     this.loadMap('town');
     // Override position to healer NPC front
     const ts = GameData.TILE_SIZE;
@@ -174,6 +181,39 @@ class Game {
   }
 
   teleportPlayer(portal) {
+    // Gate: north exit requires bossDefeated
+    if (portal.target === 'random_dungeon') {
+      if (!this.player.bossDefeated) {
+        UI.startDialogue('dungeon_gate_locked');
+        // Push player away from portal to avoid re-trigger
+        const ts = GameData.TILE_SIZE;
+        this.player.y = portal.y * ts + ts + ts / 2;
+        return;
+      }
+      // Enter random dungeon floor 1
+      this.enterRandomDungeon();
+      return;
+    }
+
+    // Stairs down in random dungeon
+    if (portal.isStairsDown && this.dungeonState && this.dungeonState.active) {
+      this.dungeonNextFloor();
+      return;
+    }
+
+    // Leaving dungeon (stairs up to town from floor 1)
+    if (portal.isStairsUp && this.dungeonState && this.dungeonState.active) {
+      this.leaveDungeon();
+      this.loadMap(portal.target);
+      const ts = GameData.TILE_SIZE;
+      this.player.x = portal.spawnX * ts + ts / 2;
+      this.player.y = portal.spawnY * ts + ts / 2;
+      Camera.follow(this.player);
+      Camera.x = Camera.targetX;
+      Camera.y = Camera.targetY;
+      return;
+    }
+
     this.loadMap(portal.target);
     const ts = GameData.TILE_SIZE;
     this.player.x = portal.spawnX * ts + ts / 2;
@@ -181,6 +221,61 @@ class Game {
     Camera.follow(this.player);
     Camera.x = Camera.targetX;
     Camera.y = Camera.targetY;
+  }
+
+  enterRandomDungeon() {
+    DungeonGenerator.cleanup();
+    const totalFloors = DungeonGenerator.TOTAL_FLOORS;
+    this.dungeonState = { active: true, floor: 1, totalFloors };
+
+    const result = DungeonGenerator.generate(1, totalFloors);
+    GameData.MAPS[result.id] = result.map;
+
+    this.loadMap(result.id);
+    // Player spawns at entrance
+    const ts = GameData.TILE_SIZE;
+    this.player.x = result.entranceX * ts + ts / 2;
+    this.player.y = result.entranceY * ts + ts / 2;
+    Camera.follow(this.player);
+    Camera.x = Camera.targetX;
+    Camera.y = Camera.targetY;
+  }
+
+  dungeonNextFloor() {
+    const nextFloor = this.dungeonState.floor + 1;
+    this.dungeonState.floor = nextFloor;
+
+    const result = DungeonGenerator.generate(nextFloor, this.dungeonState.totalFloors);
+    GameData.MAPS[result.id] = result.map;
+
+    this.loadMap(result.id);
+    const ts = GameData.TILE_SIZE;
+    this.player.x = result.entranceX * ts + ts / 2;
+    this.player.y = result.entranceY * ts + ts / 2;
+    Camera.follow(this.player);
+    Camera.x = Camera.targetX;
+    Camera.y = Camera.targetY;
+  }
+
+  leaveDungeon() {
+    this.dungeonState = null;
+    DungeonGenerator.cleanup();
+  }
+
+  onDungeonBossDefeated() {
+    setTimeout(() => {
+      UI.startDialogue('dungeon_boss_defeated', () => {
+        // Return to town after dialogue
+        this.leaveDungeon();
+        this.loadMap('town');
+        const ts = GameData.TILE_SIZE;
+        this.player.x = 12 * ts + ts / 2;
+        this.player.y = 1 * ts + ts / 2;
+        Camera.follow(this.player);
+        Camera.x = Camera.targetX;
+        Camera.y = Camera.targetY;
+      });
+    }, 1000);
   }
 
   healPlayer() {
@@ -547,7 +642,8 @@ class Game {
     const saveData = {
       version: 1,
       timestamp: Date.now(),
-      currentMap: this.currentMap,
+      // Save as town if in random dungeon (dungeon maps are not persistent)
+      currentMap: this.currentMap.startsWith('rdungeon_') ? 'town' : this.currentMap,
       player: {
         hp: this.player.hp,
         maxHp: this.player.maxHp,
@@ -568,8 +664,9 @@ class Game {
       },
       chests: {},
     };
-    // Save chest opened state for all maps
+    // Save chest opened state for all maps (skip random dungeon maps)
     for (const mapId in GameData.MAPS) {
+      if (mapId.startsWith('rdungeon_')) continue;
       saveData.chests[mapId] = GameData.MAPS[mapId].chests.map(c => c.opened);
     }
     try {
@@ -626,7 +723,9 @@ class Game {
     this.state = 'playing';
     document.getElementById('title-screen').classList.add('hidden');
     document.getElementById('hud').classList.remove('hidden');
-    this.loadMap(saveData.currentMap || 'town');
+    // Fallback to town if saved map doesn't exist (e.g. random dungeon)
+    const loadMapId = (saveData.currentMap && GameData.MAPS[saveData.currentMap]) ? saveData.currentMap : 'town';
+    this.loadMap(loadMapId);
   }
 
   hasSaveData() {

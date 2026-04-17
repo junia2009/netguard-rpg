@@ -310,20 +310,54 @@ const MapRenderer = {
     map.portals.forEach(portal => {
       const pos = Camera.worldToScreen(portal.x * ts, portal.y * ts);
       const pulse = Math.sin(Date.now() / 400) * 0.3 + 0.5;
-      ctx.fillStyle = `rgba(0,200,255,${pulse * 0.3})`;
-      ctx.fillRect(pos.x + 2, pos.y + 2, ts - 4, ts - 4);
-      ctx.strokeStyle = `rgba(0,255,255,${pulse})`;
-      ctx.lineWidth = 2;
-      ctx.strokeRect(pos.x + 4, pos.y + 4, ts - 8, ts - 8);
-      // Inner diamond
-      ctx.beginPath();
-      ctx.moveTo(pos.x + ts/2, pos.y + 6);
-      ctx.lineTo(pos.x + ts - 6, pos.y + ts/2);
-      ctx.lineTo(pos.x + ts/2, pos.y + ts - 6);
-      ctx.lineTo(pos.x + 6, pos.y + ts/2);
-      ctx.closePath();
-      ctx.strokeStyle = `rgba(0,255,200,${pulse * 0.7})`;
-      ctx.stroke();
+
+      if (portal.isStairsDown) {
+        // Stairs down - red/orange pulsing
+        ctx.fillStyle = `rgba(255,100,0,${pulse * 0.3})`;
+        ctx.fillRect(pos.x + 2, pos.y + 2, ts - 4, ts - 4);
+        ctx.strokeStyle = `rgba(255,150,0,${pulse})`;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(pos.x + 4, pos.y + 4, ts - 8, ts - 8);
+        // Down arrow
+        ctx.beginPath();
+        ctx.moveTo(pos.x + ts/2, pos.y + ts - 8);
+        ctx.lineTo(pos.x + ts - 8, pos.y + 8);
+        ctx.lineTo(pos.x + 8, pos.y + 8);
+        ctx.closePath();
+        ctx.strokeStyle = `rgba(255,200,0,${pulse * 0.8})`;
+        ctx.stroke();
+      } else if (portal.isStairsUp) {
+        // Stairs up - green pulsing
+        ctx.fillStyle = `rgba(0,255,100,${pulse * 0.3})`;
+        ctx.fillRect(pos.x + 2, pos.y + 2, ts - 4, ts - 4);
+        ctx.strokeStyle = `rgba(0,255,150,${pulse})`;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(pos.x + 4, pos.y + 4, ts - 8, ts - 8);
+        // Up arrow
+        ctx.beginPath();
+        ctx.moveTo(pos.x + ts/2, pos.y + 8);
+        ctx.lineTo(pos.x + ts - 8, pos.y + ts - 8);
+        ctx.lineTo(pos.x + 8, pos.y + ts - 8);
+        ctx.closePath();
+        ctx.strokeStyle = `rgba(0,255,200,${pulse * 0.8})`;
+        ctx.stroke();
+      } else {
+        // Normal portal
+        ctx.fillStyle = `rgba(0,200,255,${pulse * 0.3})`;
+        ctx.fillRect(pos.x + 2, pos.y + 2, ts - 4, ts - 4);
+        ctx.strokeStyle = `rgba(0,255,255,${pulse})`;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(pos.x + 4, pos.y + 4, ts - 8, ts - 8);
+        // Inner diamond
+        ctx.beginPath();
+        ctx.moveTo(pos.x + ts/2, pos.y + 6);
+        ctx.lineTo(pos.x + ts - 6, pos.y + ts/2);
+        ctx.lineTo(pos.x + ts/2, pos.y + ts - 6);
+        ctx.lineTo(pos.x + 6, pos.y + ts/2);
+        ctx.closePath();
+        ctx.strokeStyle = `rgba(0,255,200,${pulse * 0.7})`;
+        ctx.stroke();
+      }
       ctx.lineWidth = 1;
     });
 

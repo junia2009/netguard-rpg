@@ -99,8 +99,12 @@ const Combat = {
 
     // Boss defeated
     if (enemy.isBoss) {
-      player.bossDefeated = true;
-      this.game.onBossDefeated();
+      if (enemy.isDungeonBoss) {
+        this.game.onDungeonBossDefeated();
+      } else {
+        player.bossDefeated = true;
+        this.game.onBossDefeated();
+      }
     }
   },
 

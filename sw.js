@@ -1,4 +1,4 @@
-const CACHE_NAME = 'netguard-v1';
+const CACHE_NAME = 'netguard-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -8,6 +8,8 @@ const ASSETS = [
   './js/entities.js',
   './js/combat.js',
   './js/ui.js',
+  './js/music.js',
+  './js/dungeon.js',
   './js/game.js',
   './icons/icon-192.png',
   './icons/icon-512.png',

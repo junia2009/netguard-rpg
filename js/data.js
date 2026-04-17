@@ -39,7 +39,7 @@ GameData.MAPS = {
     width: 25,
     height: 20,
     tileData: [
-      1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+      1,1,1,1,1,1,1,1,1,1,1,1,4,1,1,1,1,1,1,1,1,1,1,1,1,
       1,3,3,3,3,3,3,3,1,1,1,4,4,4,1,1,1,3,3,3,3,3,3,3,1,
       1,3,3,3,3,3,3,3,1,1,1,4,4,4,1,1,1,3,3,3,3,3,3,3,1,
       1,3,3,1,1,1,3,3,1,1,1,4,4,4,1,1,1,3,3,1,1,1,3,3,1,
@@ -63,6 +63,7 @@ GameData.MAPS = {
     playerStart: { x: 12, y: 9 },
     portals: [
       { x: 12, y: 19, target: 'field', spawnX: 12, spawnY: 1 },
+      { x: 12, y: 0, target: 'random_dungeon', spawnX: 0, spawnY: 0 },
     ],
     npcs: [
       { id: 'elder', x: 4, y: 4, sprite: 'AI', name: 'マスターAI', dialogue: 'elder_intro' },
@@ -326,6 +327,38 @@ GameData.ENEMIES = {
     isBoss: true,
     drops: [{ item: 'quantum_blade', chance: 1.0 }],
   },
+  // --- ランダムダンジョン用エネミー ---
+  botnet_node: {
+    name: 'ボットネット', sprite: 'BN', color: '#44aa66',
+    hp: 40, atk: 7, def: 3, spd: 1.2, exp: 20, gold: 12,
+    size: 20, aggroRange: 130, attackRange: 24, attackCooldown: 1400,
+    drops: [{ item: 'patch', chance: 0.3 }],
+  },
+  cryptojacker: {
+    name: 'クリプトジャッカー', sprite: 'CJ', color: '#ccaa00',
+    hp: 55, atk: 13, def: 5, spd: 1.6, exp: 35, gold: 25,
+    size: 22, aggroRange: 150, attackRange: 26, attackCooldown: 1200,
+    drops: [{ item: 'hotfix', chance: 0.25 }, { item: 'memory_cleaner', chance: 0.15 }],
+  },
+  apt: {
+    name: 'APT', sprite: 'AP', color: '#8833cc',
+    hp: 90, atk: 20, def: 12, spd: 1.0, exp: 60, gold: 45,
+    size: 24, aggroRange: 170, attackRange: 30, attackCooldown: 1300,
+    drops: [{ item: 'hotfix', chance: 0.35 }],
+  },
+  polymorphic: {
+    name: 'ポリモーフィック', sprite: 'PM', color: '#cc44aa',
+    hp: 120, atk: 25, def: 16, spd: 1.4, exp: 85, gold: 60,
+    size: 24, aggroRange: 160, attackRange: 32, attackCooldown: 1100,
+    drops: [{ item: 'hotfix', chance: 0.4 }, { item: 'memory_cleaner', chance: 0.25 }],
+  },
+  dark_ai: {
+    name: 'ダークAI', sprite: 'DA', color: '#aa00ff',
+    hp: 800, atk: 45, def: 25, spd: 0.8, exp: 800, gold: 500,
+    size: 48, aggroRange: 300, attackRange: 48, attackCooldown: 1800,
+    isBoss: true, isDungeonBoss: true,
+    drops: [],
+  },
 };
 
 // --- アイテムデータ ---
@@ -429,6 +462,14 @@ GameData.DIALOGUES = {
   boss_defeated: [
     { name: '', text: 'ゼロデイを無力化した！ネットワークが浄化されていく…' },
     { name: '', text: 'マスターAIに報告しよう。' },
+  ],
+  dungeon_boss_defeated: [
+    { name: '', text: 'ダークAIを撃破した！異常セクターが崩壊していく…' },
+    { name: '', text: 'ホームサーバーに転送される——' },
+  ],
+  dungeon_gate_locked: [
+    { name: 'マスターAI', text: '北ゲートは異常セクターへのアクセスポイントだ。' },
+    { name: 'マスターAI', text: 'まずはゼロデイを無力化してからだ。今は南へ向かえ。' },
   ],
 };
 

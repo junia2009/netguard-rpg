@@ -486,7 +486,19 @@ const Music = (() => {
   };
 
   function playForMap(mapId) {
-    const trackName = MAP_TRACKS[mapId];
+    // Random dungeon floors use dungeon tracks
+    let trackName = MAP_TRACKS[mapId];
+    if (!trackName && mapId.startsWith('rdungeon_f')) {
+      const floor = parseInt(mapId.replace('rdungeon_f', ''));
+      const totalFloors = DungeonGenerator ? DungeonGenerator.TOTAL_FLOORS : 5;
+      if (floor >= totalFloors) {
+        trackName = 'boss';
+      } else if (floor >= 3) {
+        trackName = 'dungeon2';
+      } else {
+        trackName = 'dungeon1';
+      }
+    }
     if (!trackName) return;
     if (currentTrack === trackName) return; // Already playing
     startLoop(trackName);

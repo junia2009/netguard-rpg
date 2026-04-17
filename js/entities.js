@@ -340,6 +340,7 @@ class Enemy {
     this.attackRange = data.attackRange;
     this.attackCooldown = data.attackCooldown;
     this.isBoss = data.isBoss || false;
+    this.isDungeonBoss = data.isDungeonBoss || false;
     this.drops = data.drops || [];
 
     this.alive = true;

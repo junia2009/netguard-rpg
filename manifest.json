@@ -1,6 +1,6 @@
 {
-  "name": "NETGUARD:// - 電脳防衛戦記",
-  "short_name": "NETGUARD",
+  "name": "NET WARS:// - 電子世界を救おう！",
+  "short_name": "NET WARS",
   "description": "サイバーアクションRPG",
   "start_url": "./index.html",
   "display": "standalone",
