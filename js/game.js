@@ -255,7 +255,7 @@ class Game {
       lineIdx++;
     }, 800);
 
-    // Return to world button
+    // Return to title button
     btnTitle.addEventListener('click', () => {
       screen.classList.add('hidden');
       msg.style.display = '';
@@ -267,10 +267,9 @@ class Game {
       btnTitle.classList.add('hidden');
       btnTitle.classList.remove('visible');
 
-      // Resume playing in town
-      this.state = 'playing';
-      document.getElementById('hud').classList.remove('hidden');
-      this.loadMap('town');
+      this.state = 'title';
+      document.getElementById('title-screen').classList.remove('hidden');
+      this.updateContinueButton();
     }, { once: true });
   }
 
