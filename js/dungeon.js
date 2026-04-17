@@ -143,9 +143,10 @@ const DungeonGenerator = (() => {
 
   // Floor-based chest items
   function getChestItems(floor) {
-    if (floor <= 2) return ['patch', 'hotfix', 'patch'];
-    if (floor <= 4) return ['hotfix', 'memory_cleaner', 'hotfix'];
-    return ['hotfix', 'memory_cleaner'];
+    if (floor <= 1) return ['hotfix', 'patch', 'memory_cleaner'];
+    if (floor <= 2) return ['hotfix', 'overclock', 'firewall_breaker'];
+    if (floor <= 3) return ['full_restore', 'overclock', 'quantum_shield'];
+    return ['full_restore', 'overclock', 'rootkit_slicer', 'darknet_armor'];
   }
 
   function generate(floor, totalFloors) {

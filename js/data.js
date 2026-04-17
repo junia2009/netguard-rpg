@@ -344,20 +344,20 @@ GameData.ENEMIES = {
     name: 'APT', sprite: 'AP', color: '#8833cc',
     hp: 90, atk: 20, def: 12, spd: 1.0, exp: 60, gold: 45,
     size: 24, aggroRange: 170, attackRange: 30, attackCooldown: 1300,
-    drops: [{ item: 'hotfix', chance: 0.35 }],
+    drops: [{ item: 'hotfix', chance: 0.35 }, { item: 'firewall_breaker', chance: 0.08 }],
   },
   polymorphic: {
     name: 'ポリモーフィック', sprite: 'PM', color: '#cc44aa',
     hp: 120, atk: 25, def: 16, spd: 1.4, exp: 85, gold: 60,
     size: 24, aggroRange: 160, attackRange: 32, attackCooldown: 1100,
-    drops: [{ item: 'hotfix', chance: 0.4 }, { item: 'memory_cleaner', chance: 0.25 }],
+    drops: [{ item: 'overclock', chance: 0.3 }, { item: 'rootkit_slicer', chance: 0.06 }, { item: 'quantum_shield', chance: 0.06 }],
   },
   dark_ai: {
     name: 'ダークAI', sprite: 'DA', color: '#aa00ff',
     hp: 800, atk: 45, def: 25, spd: 0.8, exp: 800, gold: 500,
     size: 48, aggroRange: 300, attackRange: 48, attackCooldown: 1800,
     isBoss: true, isDungeonBoss: true,
-    drops: [],
+    drops: [{ item: 'neural_lance', chance: 0.5 }, { item: 'neural_barrier', chance: 0.5 }],
   },
 };
 
@@ -391,6 +391,23 @@ GameData.ITEMS = {
     name: '量子ブレード', desc: 'ATK+40', type: 'weapon',
     icon: '{Q}', stats: { atk: 40 }, buyPrice: 0, sellPrice: 999,
   },
+  // --- ダンジョン武器 ---
+  firewall_breaker: {
+    name: 'FWブレイカー', desc: 'ATK+28', type: 'weapon',
+    icon: '{FB}', stats: { atk: 28 }, buyPrice: 800, sellPrice: 400,
+  },
+  rootkit_slicer: {
+    name: 'ルートキットスライサー', desc: 'ATK+35', type: 'weapon',
+    icon: '{RS}', stats: { atk: 35 }, buyPrice: 1200, sellPrice: 600,
+  },
+  zero_day_edge: {
+    name: 'ゼロデイエッジ', desc: 'ATK+50', type: 'weapon',
+    icon: '{ZD}', stats: { atk: 50 }, buyPrice: 2000, sellPrice: 1000,
+  },
+  neural_lance: {
+    name: 'ニューラルランス', desc: 'ATK+65', type: 'weapon',
+    icon: '{NL}', stats: { atk: 65 }, buyPrice: 0, sellPrice: 2000,
+  },
   encryption_v1: {
     name: '暗号シールド v1', desc: 'DEF+4', type: 'armor',
     icon: '<v1>', stats: { def: 4 }, buyPrice: 60, sellPrice: 30,
@@ -403,13 +420,37 @@ GameData.ITEMS = {
     name: '暗号シールド v3', desc: 'DEF+18', type: 'armor',
     icon: '<v3>', stats: { def: 18 }, buyPrice: 600, sellPrice: 300,
   },
+  // --- ダンジョン防具 ---
+  quantum_shield: {
+    name: '量子シールド', desc: 'DEF+26', type: 'armor',
+    icon: '<QS>', stats: { def: 26 }, buyPrice: 1000, sellPrice: 500,
+  },
+  darknet_armor: {
+    name: 'ダークネットアーマー', desc: 'DEF+35', type: 'armor',
+    icon: '<DN>', stats: { def: 35 }, buyPrice: 1800, sellPrice: 900,
+  },
+  neural_barrier: {
+    name: 'ニューラルバリア', desc: 'DEF+45', type: 'armor',
+    icon: '<NB>', stats: { def: 45 }, buyPrice: 0, sellPrice: 2500,
+  },
+  // --- 上位回復アイテム ---
+  full_restore: {
+    name: 'フルリストア', desc: 'HP全回復', type: 'consumable',
+    icon: '[MAX]', effect: { hp: 9999 }, buyPrice: 300, sellPrice: 150,
+  },
+  overclock: {
+    name: 'オーバークロック', desc: 'HP200+MP50回復', type: 'consumable',
+    icon: '[OC]', effect: { hp: 200, mp: 50 }, buyPrice: 200, sellPrice: 100,
+  },
 };
 
 // --- ショップデータ ---
 GameData.SHOP_ITEMS = [
-  'patch', 'hotfix', 'memory_cleaner',
-  'antivirus_v1', 'antivirus_v2',
-  'encryption_v1', 'encryption_v2',
+  'patch', 'hotfix', 'memory_cleaner', 'full_restore', 'overclock',
+  'antivirus_v1', 'antivirus_v2', 'antivirus_v3',
+  'firewall_breaker', 'rootkit_slicer',
+  'encryption_v1', 'encryption_v2', 'encryption_v3',
+  'quantum_shield', 'darknet_armor',
 ];
 
 // --- ダイアログデータ ---
