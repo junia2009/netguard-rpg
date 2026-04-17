@@ -95,13 +95,24 @@ class Game {
   }
 
   retry() {
-    // Revive at town
+    // Revive at town (in front of healer)
     this.player.hp = this.player.maxHp;
     this.player.mp = this.player.maxMp;
     this.player.gold = Math.floor(this.player.gold / 2); // Lose half gold
     this.state = 'playing';
     UI.hideGameOver();
     this.loadMap('town');
+    // Override position to healer NPC front
+    const ts = GameData.TILE_SIZE;
+    this.player.x = 9 * ts + ts / 2;
+    this.player.y = 17 * ts + ts / 2;
+    Camera.follow(this.player);
+    Camera.x = Camera.targetX;
+    Camera.y = Camera.targetY;
+    // Revival dialogue
+    setTimeout(() => {
+      UI.startDialogue('healer_revive');
+    }, 300);
   }
 
   loadMap(mapId) {
