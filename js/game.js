@@ -50,15 +50,17 @@ class Game {
     const vh = window.innerHeight;
 
     if (Input.isMobile) {
-      // Mobile: fill screen, GB controls at bottom
+      // Mobile: fill screen with bezel margin, GB controls at bottom
       const touchEl = document.getElementById('touch-controls');
       const touchH = touchEl ? touchEl.offsetHeight : 180;
-      const gameH = vh - touchH;
-      container.style.width = vw + 'px';
+      const bezel = 12; // 6px margin each side
+      const gameW = vw - bezel;
+      const gameH = vh - touchH - 6; // 6px top margin
+      container.style.width = gameW + 'px';
       container.style.height = gameH + 'px';
-      this.canvas.width = vw;
+      this.canvas.width = gameW;
       this.canvas.height = gameH;
-      Camera.width = vw;
+      Camera.width = gameW;
       Camera.height = gameH;
     } else {
       // Desktop: fit within window, maintain 4:3 ratio

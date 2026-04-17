@@ -680,17 +680,17 @@ body {
 
 @media (max-width: 840px), (hover: none) and (pointer: coarse) {
   body {
-    background: #0c0c18;
+    background: linear-gradient(180deg, #b8b8c0 0%, #a8a8b0 100%);
     align-items: flex-start;
   }
 
   #game-container {
-    width: 100vw !important;
+    width: calc(100vw - 12px) !important;
+    margin: 6px auto 0 auto;
     border: none;
-    border-radius: 0;
-    box-shadow: none;
-    /* Screen bezel */
-    border-bottom: 4px solid #101020;
+    border-radius: 8px;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.3);
+    overflow: hidden;
   }
 
   #game-canvas {
