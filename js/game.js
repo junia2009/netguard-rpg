@@ -179,6 +179,10 @@ class Game {
     this.state = 'ending';
     document.getElementById('hud').classList.add('hidden');
 
+    // Auto-save before ending so player can continue post-game
+    this.player.endingCleared = true;
+    this.saveGame();
+
     const screen = document.getElementById('ending-screen');
     const msg = document.getElementById('ending-message');
     const creditsRoll = document.getElementById('credits-roll');
@@ -208,7 +212,7 @@ class Game {
     const typeTimer = setInterval(() => {
       if (lineIdx >= lines.length) {
         clearInterval(typeTimer);
-        // Phase 2: Fade out epilogue, start credits roll
+        // Phase 2: Wait for reading, then fade out and start credits
         setTimeout(() => {
           msg.style.transition = 'opacity 2s';
           msg.classList.remove('visible');
@@ -238,8 +242,8 @@ class Game {
               }
             };
             requestAnimationFrame(scrollAnim);
-          }, 2000);
-        }, 2000);
+          }, 2500);
+        }, 5000);
         return;
       }
 
@@ -251,7 +255,7 @@ class Game {
       lineIdx++;
     }, 800);
 
-    // Return to title button
+    // Return to world button
     btnTitle.addEventListener('click', () => {
       screen.classList.add('hidden');
       msg.style.display = '';
@@ -263,9 +267,10 @@ class Game {
       btnTitle.classList.add('hidden');
       btnTitle.classList.remove('visible');
 
-      this.state = 'title';
-      document.getElementById('title-screen').classList.remove('hidden');
-      this.updateContinueButton();
+      // Resume playing in town
+      this.state = 'playing';
+      document.getElementById('hud').classList.remove('hidden');
+      this.loadMap('town');
     }, { once: true });
   }
 
@@ -532,6 +537,7 @@ class Game {
         armor: this.player.armor,
         inventory: { ...this.player.inventory },
         bossDefeated: this.player.bossDefeated,
+        endingCleared: this.player.endingCleared || false,
       },
       chests: {},
     };
@@ -574,6 +580,7 @@ class Game {
     this.player.armor = p.armor;
     this.player.inventory = { ...p.inventory };
     this.player.bossDefeated = !!p.bossDefeated;
+    this.player.endingCleared = !!p.endingCleared;
 
     // Restore chest states
     if (saveData.chests) {
