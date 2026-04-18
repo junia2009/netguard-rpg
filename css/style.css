@@ -630,11 +630,43 @@ body {
   border-right-color: #6a9de8 !important;
 }
 
+#gb-body.gb-theme-cobalt #joystick-base {
+  background: radial-gradient(circle, #4a7ab8 0%, #3a6aaa 70%, #305098 100%);
+  border-color: #6090c8;
+}
+#gb-body.gb-theme-cobalt #joystick-thumb {
+  background: radial-gradient(circle at 40% 38%, #283878, #1c2860);
+  border-color: #3a5098;
+}
+#gb-body.gb-theme-cobalt .center-btn,
+#gb-body.gb-theme-cobalt #btn-bgm-toggle {
+  background: #4a7ab0;
+}
+#gb-body.gb-theme-cobalt .center-btn:active {
+  background: #3a6aa0;
+}
+
 #gb-body.gb-theme-red {
   background: linear-gradient(180deg, #d94040 0%, #bb3030 50%, #9a2020 100%) !important;
   border-top-color: #e85050 !important;
   border-left-color: #e85050 !important;
   border-right-color: #e85050 !important;
+}
+
+#gb-body.gb-theme-red #joystick-base {
+  background: radial-gradient(circle, #b83030 0%, #982020 70%, #7a1818 100%);
+  border-color: #c84040;
+}
+#gb-body.gb-theme-red #joystick-thumb {
+  background: radial-gradient(circle at 40% 38%, #701818, #501010);
+  border-color: #901a1a;
+}
+#gb-body.gb-theme-red .center-btn,
+#gb-body.gb-theme-red #btn-bgm-toggle {
+  background: #9a2828;
+}
+#gb-body.gb-theme-red .center-btn:active {
+  background: #7a1818;
 }
 
 #gb-body.gb-theme-pearl {
@@ -644,11 +676,43 @@ body {
   border-right-color: #c8e4f8 !important;
 }
 
+#gb-body.gb-theme-pearl #joystick-base {
+  background: radial-gradient(circle, #88b0c8 0%, #78a0b8 70%, #6890a8 100%);
+  border-color: #98c0d8;
+}
+#gb-body.gb-theme-pearl #joystick-thumb {
+  background: radial-gradient(circle at 40% 38%, #506878, #405868);
+  border-color: #688898;
+}
+#gb-body.gb-theme-pearl .center-btn,
+#gb-body.gb-theme-pearl #btn-bgm-toggle {
+  background: #7aaabf;
+}
+#gb-body.gb-theme-pearl .center-btn:active {
+  background: #6090a8;
+}
+
 #gb-body.gb-theme-emerald {
   background: linear-gradient(180deg, #40b870 0%, #309a58 50%, #208040 100%) !important;
   border-top-color: #50c880 !important;
   border-left-color: #50c880 !important;
   border-right-color: #50c880 !important;
+}
+
+#gb-body.gb-theme-emerald #joystick-base {
+  background: radial-gradient(circle, #308858 0%, #287848 70%, #206038 100%);
+  border-color: #40a068;
+}
+#gb-body.gb-theme-emerald #joystick-thumb {
+  background: radial-gradient(circle at 40% 38%, #185030, #103820);
+  border-color: #286040;
+}
+#gb-body.gb-theme-emerald .center-btn,
+#gb-body.gb-theme-emerald #btn-bgm-toggle {
+  background: #208040;
+}
+#gb-body.gb-theme-emerald .center-btn:active {
+  background: #186030;
 }
 
 #gb-body.gb-theme-rainbow {
@@ -964,6 +1028,15 @@ body {
   body {
     background: linear-gradient(180deg, #b8b8c0 0%, #a8a8b0 100%);
     align-items: flex-start;
+  }
+
+  body.gb-theme-cobalt { background: linear-gradient(180deg, #5b8dd9 0%, #4a7ac0 100%); }
+  body.gb-theme-red { background: linear-gradient(180deg, #d94040 0%, #b82828 100%); }
+  body.gb-theme-pearl { background: linear-gradient(180deg, #b8d4e8 0%, #9abcd4 100%); }
+  body.gb-theme-emerald { background: linear-gradient(180deg, #40b870 0%, #309a58 100%); }
+  body.gb-theme-rainbow {
+    background: linear-gradient(180deg, #ff6b6b 0%, #ffd93d 25%, #6bcb77 50%, #4d96ff 75%, #c77dff 100%);
+    animation: gb-rainbow-hue 3s linear infinite;
   }
 
   #game-container {
