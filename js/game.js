@@ -176,7 +176,7 @@ class Game {
       // Floor depth also adds scaling
       const levelScale = 1 + Math.max(0, playerLevel - 5) * 0.15;
       const floorScale = 1 + (this.dungeonState.floor - 1) * 0.1;
-      scaleFactor = levelScale * floorScale;
+      scaleFactor = Math.min(levelScale * floorScale, 1.5);
     }
     map.enemies.forEach(eData => {
       const enemy = new Enemy(
