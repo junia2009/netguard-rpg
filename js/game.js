@@ -865,10 +865,14 @@ class Game {
     if (!gbBody) return;
 
     const themes = ['cobalt', 'red', 'pearl', 'emerald', 'rainbow'];
-    themes.forEach(t => gbBody.classList.remove(`gb-theme-${t}`));
+    themes.forEach(t => {
+      gbBody.classList.remove(`gb-theme-${t}`);
+      document.body.classList.remove(`gb-theme-${t}`);
+    });
 
     if (themeId !== 'default') {
       gbBody.classList.add(`gb-theme-${themeId}`);
+      document.body.classList.add(`gb-theme-${themeId}`);
     }
 
     localStorage.setItem('netguard_gb_theme', themeId);
@@ -884,6 +888,7 @@ class Game {
     if (saved && saved !== 'default') {
       const gbBody = document.getElementById('gb-body');
       if (gbBody) gbBody.classList.add(`gb-theme-${saved}`);
+      document.body.classList.add(`gb-theme-${saved}`);
     }
   }
 }
