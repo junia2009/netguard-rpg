@@ -723,6 +723,28 @@ body {
   animation: gb-rainbow-hue 3s linear infinite;
 }
 
+#gb-body.gb-theme-matblack {
+  background: linear-gradient(180deg, #3a3a3a 0%, #222222 50%, #1a1a1a 100%) !important;
+  border-top-color: #444 !important;
+  border-left-color: #444 !important;
+  border-right-color: #444 !important;
+}
+#gb-body.gb-theme-matblack #joystick-base {
+  background: radial-gradient(circle, #2a2a2a 0%, #1a1a1a 70%, #111 100%);
+  border-color: #383838;
+}
+#gb-body.gb-theme-matblack #joystick-thumb {
+  background: radial-gradient(circle at 40% 38%, #181818, #0e0e0e);
+  border-color: #303030;
+}
+#gb-body.gb-theme-matblack .center-btn,
+#gb-body.gb-theme-matblack #btn-bgm-toggle {
+  background: #2a2a2a;
+}
+#gb-body.gb-theme-matblack .center-btn:active {
+  background: #1a1a1a;
+}
+
 @keyframes gb-rainbow-hue {
   from { filter: hue-rotate(0deg); }
   to { filter: hue-rotate(360deg); }
@@ -1038,6 +1060,7 @@ body {
     background: linear-gradient(180deg, #ff6b6b 0%, #ffd93d 25%, #6bcb77 50%, #4d96ff 75%, #c77dff 100%);
     animation: gb-rainbow-hue 3s linear infinite;
   }
+  body.gb-theme-matblack { background: linear-gradient(180deg, #3a3a3a 0%, #222222 100%); }
 
   #game-container {
     width: calc(100vw - 12px) !important;

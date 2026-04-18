@@ -865,6 +865,7 @@ class Game {
       { id: 'pearl',    name: 'パールブルー',   bg: 'linear-gradient(180deg, #b8d4e8 0%, #9abcd4 50%, #7aaabf 100%)' },
       { id: 'emerald',  name: 'エメラルド',     bg: 'linear-gradient(180deg, #40b870 0%, #309a58 50%, #208040 100%)' },
       { id: 'rainbow',  name: 'レインボー',     bg: 'linear-gradient(180deg, #ff6b6b 0%, #ffd93d 25%, #6bcb77 50%, #4d96ff 75%, #c77dff 100%)' },
+      { id: 'matblack', name: 'マットブラック', bg: 'linear-gradient(180deg, #3a3a3a 0%, #222222 50%, #1a1a1a 100%)' },
     ];
 
     const list = document.getElementById('easter-color-list');
@@ -888,7 +889,7 @@ class Game {
     const gbBody = document.getElementById('gb-body');
     if (!gbBody) return;
 
-    const themes = ['cobalt', 'red', 'pearl', 'emerald', 'rainbow'];
+    const themes = ['cobalt', 'red', 'pearl', 'emerald', 'rainbow', 'matblack'];
     themes.forEach(t => {
       gbBody.classList.remove(`gb-theme-${t}`);
       document.body.classList.remove(`gb-theme-${t}`);
