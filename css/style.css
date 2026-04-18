@@ -207,6 +207,14 @@ body {
   margin-top: 4px;
 }
 
+.dodge-btn {
+  background: rgba(0, 255, 160, 0.25) !important;
+  border-color: #00ffaa !important;
+  color: #00ffaa !important;
+  font-size: 11px !important;
+  margin-top: 4px;
+}
+
 /* --- ダイアログ --- */
 #dialogue-box {
   position: absolute;

@@ -40,9 +40,20 @@ class Player {
     this.skillAnimTimer = 0;  // visual feedback
     this.buffDefTimer = 0;    // Firewall buff remaining
     this.buffAtkTimer = 0;    // Rollback ATK buff remaining
+
+    // Dodge system
+    this.dodging = false;
+    this.dodgeTimer = 0;
+    this.dodgeCooldown = 0;
+    this.dodgeVelX = 0;
+    this.dodgeVelY = 0;
   }
 
-  get atk() {
+  // Dodge system constants
+  static DODGE_DURATION     = 0.25; // seconds
+  static DODGE_COOLDOWN     = 1.2;  // seconds
+  static DODGE_INVINCIBLE   = 0.3;  // invincibility window (seconds)
+  static DODGE_SPEED_MULT   = 3.5;  // speed multiplier relative to normal movement
     let a = this.baseAtk;
     if (this.weapon && GameData.ITEMS[this.weapon]) a += GameData.ITEMS[this.weapon].stats.atk;
     if (this.buffAtkTimer > 0) a = Math.floor(a * 1.5);
@@ -69,6 +80,7 @@ class Player {
     if (this.skillAnimTimer > 0) this.skillAnimTimer -= dt;
     if (this.buffDefTimer > 0) this.buffDefTimer -= dt;
     if (this.buffAtkTimer > 0) this.buffAtkTimer -= dt;
+    if (this.dodgeCooldown > 0) this.dodgeCooldown -= dt;
     // MP自然回復 (1/秒)
     if (this.mp < this.maxMp) {
       this.mpRegenTimer = (this.mpRegenTimer || 0) + dt;
@@ -80,6 +92,22 @@ class Player {
     if (this.attacking) {
       this.attackTimer -= dt;
       if (this.attackTimer <= 0) this.attacking = false;
+    }
+
+    // Dodge movement (overrides normal movement)
+    if (this.dodging) {
+      this.dodgeTimer -= dt;
+      if (this.dodgeTimer <= 0) {
+        this.dodging = false;
+      } else {
+        const dodgeSpeed = this.spd * 60 * dt * Player.DODGE_SPEED_MULT;
+        const newX = this.x + this.dodgeVelX * dodgeSpeed;
+        const newY = this.y + this.dodgeVelY * dodgeSpeed;
+        if (MapRenderer.isWalkable(mapId, newX, this.y, this.size)) this.x = newX;
+        if (MapRenderer.isWalkable(mapId, this.x, newY, this.size)) this.y = newY;
+        Particles.spawn(this.x, this.y, 'rgba(0,220,255,0.6)', 2, 30, 0.15);
+      }
+      return;
     }
 
     // Movement
@@ -187,6 +215,31 @@ class Player {
     return true;
   }
 
+  startDodge() {
+    if (this.dodging || this.dodgeCooldown > 0) return false;
+    // Use movement direction, or facing direction if standing still
+    const mx = Input.moveX;
+    const my = Input.moveY;
+    const len = Math.sqrt(mx * mx + my * my);
+    if (len > 0.1) {
+      this.dodgeVelX = mx / len;
+      this.dodgeVelY = my / len;
+    } else {
+      switch (this.facing) {
+        case 'up':    this.dodgeVelX = 0;  this.dodgeVelY = -1; break;
+        case 'down':  this.dodgeVelX = 0;  this.dodgeVelY =  1; break;
+        case 'left':  this.dodgeVelX = -1; this.dodgeVelY =  0; break;
+        case 'right': this.dodgeVelX =  1; this.dodgeVelY =  0; break;
+      }
+    }
+    this.dodging = true;
+    this.dodgeTimer = Player.DODGE_DURATION;
+    this.dodgeCooldown = Player.DODGE_COOLDOWN;
+    this.invincible = Math.max(this.invincible, Player.DODGE_INVINCIBLE);
+    this.attacking = false;
+    return true;
+  }
+
   getAttackHitbox() {
     const range = 32;
     const w = 28, h = 28;
@@ -258,8 +311,11 @@ class Player {
     const pos = Camera.worldToScreen(this.x, this.y);
     const s = this.size;
 
-    // Invincibility flash
-    if (this.invincible > 0 && Math.floor(this.invincible * 10) % 2 === 0) {
+    // Dodge flash — bright cyan at full opacity during dodge
+    if (this.dodging) {
+      ctx.globalAlpha = 0.85;
+    } else if (this.invincible > 0 && Math.floor(this.invincible * 10) % 2 === 0) {
+      // Invincibility flash
       ctx.globalAlpha = 0.4;
     }
 
@@ -344,6 +400,19 @@ class Player {
       ctx.arc(pos.x, pos.y - bobY, s + 6, 0, Math.PI * 2);
       ctx.stroke();
       ctx.setLineDash([]);
+    }
+
+    // Dodge aura ring
+    if (this.dodging) {
+      const progress = this.dodgeTimer / Player.DODGE_DURATION;
+      ctx.strokeStyle = `rgba(0, 240, 255, ${progress * 0.9})`;
+      ctx.lineWidth = 3;
+      ctx.shadowColor = '#00ffff';
+      ctx.shadowBlur = 12;
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y - bobY, s + 10, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
     }
 
     ctx.globalAlpha = 1;

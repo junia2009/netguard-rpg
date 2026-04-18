@@ -484,14 +484,21 @@ class Game {
     ];
     this.player.update(dt, this.currentMap, collidables);
 
-    // Attack
-    if (Input.attack) {
+    // Attack (blocked during dodge)
+    if (Input.attack && !this.player.dodging) {
       Combat.playerAttack(this.player, this.enemies);
     }
 
-    // Skill
-    if (Input.skill) {
+    // Skill (blocked during dodge)
+    if (Input.skill && !this.player.dodging) {
       Combat.playerSkill(this.player, this.enemies);
+    }
+
+    // Dodge
+    if (Input.dodge) {
+      if (this.player.startDodge()) {
+        UI.showFloatingText(this.player.x, this.player.y - 30, 'DODGE!', '#00ffff');
+      }
     }
 
     // Interact

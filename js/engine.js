@@ -124,6 +124,7 @@ const Input = {
     bindAction('btn-touch-inv', 'inventory');
     bindAction('btn-touch-save', 'save');
     bindAction('btn-touch-skill', 'skill');
+    bindAction('btn-touch-dodge', 'dodge');
 
     // Prevent zoom/scroll on the game area
     document.getElementById('game-container').addEventListener('touchmove', (e) => e.preventDefault(), { passive: false });
@@ -187,6 +188,7 @@ const Input = {
   get escape() { return this.isJustPressed('Escape'); },
   get save() { return this.isJustPressed('KeyQ') || !!this._touchJust?.save; },
   get skill() { return this.isJustPressed('KeyZ') || !!this._touchJust?.skill; },
+  get dodge() { return this.isJustPressed('ShiftLeft') || this.isJustPressed('ShiftRight') || !!this._touchJust?.dodge; },
 };
 
 // --- カメラ ---

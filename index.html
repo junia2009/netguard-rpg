@@ -24,11 +24,11 @@
     </div>
     <p class="controls-hint controls-hint-pc">
       移動: WASD / 矢印キー ｜ 攻撃: Space ｜ 会話: Enter<br>
-      アイテム使用: X ｜ インベントリ: I ｜ セーブ: Q
+      アイテム使用: X ｜ インベントリ: I ｜ セーブ: Q ｜ 回避: Shift
     </p>
     <p class="controls-hint controls-hint-mobile">
       スティック: 移動 ｜ A: 攻撃 ｜ B: 会話/決定 ｜ Y: アイテム<br>
-      SAVE: セーブ ｜ MENU: インベントリ
+      DG: 回避 ｜ SAVE: セーブ ｜ MENU: インベントリ
     </p>
   </div>
 
@@ -178,7 +178,10 @@
             <button class="ab-btn" id="btn-touch-interact">B</button>
             <button class="ab-btn" id="btn-touch-attack">A</button>
           </div>
-          <button class="ab-btn skill-btn" id="btn-touch-skill">SK</button>
+          <div class="ab-row">
+            <button class="ab-btn skill-btn" id="btn-touch-skill">SK</button>
+            <button class="ab-btn dodge-btn" id="btn-touch-dodge">DG</button>
+          </div>
         </div>
       </div>
       <div id="gb-center-btns">
