@@ -256,56 +256,56 @@ const MapRenderer = {
         // Tile details - cyber theme
         if (tile === 1) {
           // Firewall - circuit border glow
-          ctx.strokeStyle = 'rgba(0,180,255,0.15)';
+          ctx.strokeStyle = 'rgba(0,180,255,0.3)';
           ctx.strokeRect(pos.x + 1, pos.y + 1, ts - 2, ts - 2);
-          ctx.fillStyle = 'rgba(0,100,200,0.08)';
+          ctx.fillStyle = 'rgba(0,100,200,0.18)';
           ctx.fillRect(pos.x + 4, pos.y + 4, ts - 8, ts - 8);
         } else if (tile === 2) {
           // Data stream - flowing data
-          ctx.fillStyle = 'rgba(0,150,255,0.2)';
+          ctx.fillStyle = 'rgba(0,150,255,0.45)';
           const flow = Math.sin(Date.now() / 400 + col * 2 + row) * 3;
           ctx.fillRect(pos.x + 4 + flow, pos.y + 6, 8, 1);
           ctx.fillRect(pos.x + 14 + flow, pos.y + 14, 10, 1);
-          ctx.fillStyle = 'rgba(0,200,255,0.3)';
+          ctx.fillStyle = 'rgba(0,200,255,0.55)';
           ctx.fillRect(pos.x + 10 - flow, pos.y + 22, 6, 1);
         } else if (tile === 3) {
           // Circuit board - grid lines
-          ctx.strokeStyle = 'rgba(0,255,100,0.1)';
+          ctx.strokeStyle = 'rgba(0,255,100,0.25)';
           ctx.beginPath();
           ctx.moveTo(pos.x + 8, pos.y); ctx.lineTo(pos.x + 8, pos.y + ts);
           ctx.moveTo(pos.x + 24, pos.y); ctx.lineTo(pos.x + 24, pos.y + ts);
           ctx.moveTo(pos.x, pos.y + 16); ctx.lineTo(pos.x + ts, pos.y + 16);
           ctx.stroke();
           // Circuit nodes
-          ctx.fillStyle = 'rgba(0,255,120,0.15)';
+          ctx.fillStyle = 'rgba(0,255,120,0.35)';
           ctx.fillRect(pos.x + 7, pos.y + 15, 3, 3);
           ctx.fillRect(pos.x + 23, pos.y + 15, 3, 3);
         } else if (tile === 4) {
           // Data path - subtle pulse lines
-          const pulse = Math.sin(Date.now() / 600 + col + row * 0.5) * 0.1 + 0.1;
+          const pulse = Math.sin(Date.now() / 600 + col + row * 0.5) * 0.15 + 0.2;
           ctx.fillStyle = `rgba(100,100,255,${pulse})`;
           ctx.fillRect(pos.x, pos.y + 15, ts, 2);
           ctx.fillRect(pos.x + 15, pos.y, 2, ts);
         } else if (tile === 5) {
           // Server block - subtle grid
-          ctx.strokeStyle = 'rgba(100,100,200,0.08)';
+          ctx.strokeStyle = 'rgba(100,100,200,0.2)';
           ctx.strokeRect(pos.x + 2, pos.y + 2, ts - 4, ts - 4);
         } else if (tile === 6) {
           // Corrupted sector - glitch lines
-          const glitch = Math.sin(Date.now() / 200 + col * 3) * 0.15 + 0.1;
+          const glitch = Math.sin(Date.now() / 200 + col * 3) * 0.2 + 0.2;
           ctx.fillStyle = `rgba(150,0,200,${glitch})`;
           ctx.fillRect(pos.x, pos.y + ((col * 7 + row * 3) % 20), ts, 2);
         } else if (tile === 7) {
           // Virus core - pulsing red
-          const glow = Math.sin(Date.now() / 300 + col * 2 + row) * 0.2 + 0.3;
+          const glow = Math.sin(Date.now() / 300 + col * 2 + row) * 0.2 + 0.5;
           ctx.fillStyle = `rgba(255,0,50,${glow})`;
           ctx.fillRect(pos.x, pos.y, ts, ts);
-          ctx.strokeStyle = `rgba(255,50,0,${glow * 0.5})`;
+          ctx.strokeStyle = `rgba(255,50,0,${glow * 0.7})`;
           ctx.strokeRect(pos.x + 4, pos.y + 4, ts - 8, ts - 8);
         }
 
         // Grid lines (cyber grid)
-        ctx.strokeStyle = 'rgba(0,150,255,0.04)';
+        ctx.strokeStyle = 'rgba(0,150,255,0.1)';
         ctx.strokeRect(pos.x, pos.y, ts, ts);
       }
     }

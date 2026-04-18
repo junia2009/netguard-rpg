@@ -18,14 +18,14 @@ GameData.TILES = {
 };
 
 GameData.TILE_COLORS = {
-  0: '#0a0a14',  // void
-  1: '#1a2a3a',  // firewall
-  2: '#003366',  // data stream
-  3: '#0a1a0a',  // circuit board
-  4: '#1a1a2a',  // data path
-  5: '#12121e',  // server block
-  6: '#0d0014',  // corrupted
-  7: '#330011',  // virus core
+  0: '#161628',  // void
+  1: '#283d52',  // firewall
+  2: '#104888',  // data stream
+  3: '#163020',  // circuit board
+  4: '#28283c',  // data path
+  5: '#20202e',  // server block
+  6: '#1e0030',  // corrupted
+  7: '#4a0018',  // virus core
 };
 
 GameData.TILE_WALKABLE = {
@@ -74,7 +74,7 @@ GameData.MAPS = {
     ],
     enemies: [],
     chests: [],
-    bgColor: '#050a10',
+    bgColor: '#0c1525',
   },
 
   field: {
@@ -105,7 +105,7 @@ GameData.MAPS = {
       { x: 32, y: 5, item: 'patch', opened: false },
       { x: 5, y: 22, item: 'patch', opened: false },
     ],
-    bgColor: '#040a04',
+    bgColor: '#0a1a0a',
   },
 
   dungeon1: {
@@ -131,7 +131,7 @@ GameData.MAPS = {
       { x: 20, y: 3, item: 'hotfix', opened: false },
       { x: 12, y: 16, item: 'antivirus_v2', opened: false },
     ],
-    bgColor: '#0a050a',
+    bgColor: '#180a20',
   },
 
   dungeon2: {
@@ -157,7 +157,7 @@ GameData.MAPS = {
       { x: 6, y: 3, item: 'hotfix', opened: false },
       { x: 20, y: 17, item: 'encryption_v3', opened: false },
     ],
-    bgColor: '#05000a',
+    bgColor: '#0e0018',
   },
 
   boss_room: {
@@ -174,7 +174,7 @@ GameData.MAPS = {
       { type: 'zeroday', x: 10, y: 7 },
     ],
     chests: [],
-    bgColor: '#100005',
+    bgColor: '#200008',
   },
 };
 

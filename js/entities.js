@@ -325,10 +325,10 @@ class Player {
 
     // Glow effect
     ctx.shadowColor = '#00ccff';
-    ctx.shadowBlur = 8;
+    ctx.shadowBlur = 14;
 
     // Body - TRON style hexagonal program
-    ctx.fillStyle = '#001830';
+    ctx.fillStyle = '#002840';
     ctx.fillRect(pos.x - s / 2, pos.y - s / 2 - bobY, s, s);
 
     // Neon border
@@ -618,7 +618,7 @@ class Enemy {
     // Body - virus/malware block
     const bodyColor = this.hitFlash > 0 ? '#ffffff' : this.color;
     ctx.shadowColor = bodyColor;
-    ctx.shadowBlur = this.isBoss ? 15 : 6;
+    ctx.shadowBlur = this.isBoss ? 20 : 10;
     ctx.fillStyle = bodyColor;
     ctx.fillRect(pos.x - s / 2, pos.y - s / 2, s, s);
 
@@ -689,9 +689,9 @@ class NPC {
 
     // NPC program block
     ctx.shadowColor = '#00ff88';
-    ctx.shadowBlur = 6;
+    ctx.shadowBlur = 12;
 
-    ctx.fillStyle = '#001a10';
+    ctx.fillStyle = '#002a1a';
     ctx.fillRect(pos.x - s/2, pos.y - s/2, s, s);
     ctx.strokeStyle = '#00ff88';
     ctx.lineWidth = 1.5;
