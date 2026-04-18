@@ -51,6 +51,12 @@ class Game {
     // Update continue button visibility
     this.updateContinueButton();
 
+    // Load saved GB theme
+    this.loadGbTheme();
+
+    // Easter egg: MENU button 7-click color picker
+    this.setupEasterEgg();
+
     // Init BGM on first user interaction
     const initBGM = () => {
       Music.init();
@@ -787,6 +793,97 @@ class Game {
       } catch(e) {}
     } else {
       btn.classList.add('hidden');
+    }
+  }
+
+  // --- イースターエッグ: GB カラー変更 ---
+  setupEasterEgg() {
+    const menuBtn = document.getElementById('btn-touch-inv');
+    if (!menuBtn) return;
+
+    let eggCount = 0;
+    let eggResetTimer = null;
+    let lastTouchTime = 0;
+
+    const handleMenuEgg = (isTouch) => {
+      if (isTouch) {
+        lastTouchTime = Date.now();
+      } else {
+        // Skip click event on touch devices to avoid double-counting
+        if (Date.now() - lastTouchTime < 500) return;
+      }
+
+      if (this.state !== 'title') { eggCount = 0; return; }
+
+      eggCount++;
+      clearTimeout(eggResetTimer);
+      if (eggCount >= 7) {
+        eggCount = 0;
+        this.openColorPicker();
+      } else {
+        eggResetTimer = setTimeout(() => { eggCount = 0; }, 3000);
+      }
+    };
+
+    menuBtn.addEventListener('touchend', (e) => { e.preventDefault(); handleMenuEgg(true); });
+    menuBtn.addEventListener('click', () => handleMenuEgg(false));
+
+    document.getElementById('close-easter-panel').addEventListener('click', () => {
+      document.getElementById('easter-color-panel').classList.add('hidden');
+    });
+  }
+
+  openColorPicker() {
+    const colors = [
+      { id: 'default',  name: 'デフォルト',    bg: 'linear-gradient(180deg, #b8b8c0 0%, #a0a0a8 50%, #909098 100%)' },
+      { id: 'cobalt',   name: 'コバルト',       bg: 'linear-gradient(180deg, #5b8dd9 0%, #4070bb 50%, #305aaa 100%)' },
+      { id: 'red',      name: 'フレイムレッド', bg: 'linear-gradient(180deg, #d94040 0%, #bb3030 50%, #9a2020 100%)' },
+      { id: 'pearl',    name: 'パールブルー',   bg: 'linear-gradient(180deg, #b8d4e8 0%, #9abcd4 50%, #7aaabf 100%)' },
+      { id: 'emerald',  name: 'エメラルド',     bg: 'linear-gradient(180deg, #40b870 0%, #309a58 50%, #208040 100%)' },
+      { id: 'rainbow',  name: 'レインボー',     bg: 'linear-gradient(180deg, #ff6b6b 0%, #ffd93d 25%, #6bcb77 50%, #4d96ff 75%, #c77dff 100%)' },
+    ];
+
+    const list = document.getElementById('easter-color-list');
+    const currentTheme = localStorage.getItem('netguard_gb_theme') || 'default';
+
+    list.innerHTML = '';
+    colors.forEach(c => {
+      const btn = document.createElement('button');
+      btn.className = 'easter-color-btn' + (c.id === currentTheme ? ' selected' : '');
+      btn.style.background = c.bg;
+      btn.dataset.colorId = c.id;
+      btn.textContent = c.name;
+      btn.addEventListener('click', () => this.applyGbTheme(c.id));
+      list.appendChild(btn);
+    });
+
+    document.getElementById('easter-color-panel').classList.remove('hidden');
+  }
+
+  applyGbTheme(themeId) {
+    const gbBody = document.getElementById('gb-body');
+    if (!gbBody) return;
+
+    const themes = ['cobalt', 'red', 'pearl', 'emerald', 'rainbow'];
+    themes.forEach(t => gbBody.classList.remove(`gb-theme-${t}`));
+
+    if (themeId !== 'default') {
+      gbBody.classList.add(`gb-theme-${themeId}`);
+    }
+
+    localStorage.setItem('netguard_gb_theme', themeId);
+
+    // Update selected state in panel
+    document.querySelectorAll('.easter-color-btn').forEach(btn => {
+      btn.classList.toggle('selected', btn.dataset.colorId === themeId);
+    });
+  }
+
+  loadGbTheme() {
+    const saved = localStorage.getItem('netguard_gb_theme');
+    if (saved && saved !== 'default') {
+      const gbBody = document.getElementById('gb-body');
+      if (gbBody) gbBody.classList.add(`gb-theme-${saved}`);
     }
   }
 }
