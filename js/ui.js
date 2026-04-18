@@ -76,6 +76,7 @@ const UI = {
     const buffs = [];
     if (player.buffDefTimer > 0) buffs.push(`🛡Firewall ${player.buffDefTimer.toFixed(1)}s`);
     if (player.buffAtkTimer > 0) buffs.push(`⚔ATK↑ ${player.buffAtkTimer.toFixed(1)}s`);
+    if (player.dodgeCooldown > 0) buffs.push(`💨DODGE ${player.dodgeCooldown.toFixed(1)}s`);
     buffEl.textContent = buffs.join('  ');
     buffEl.classList.toggle('hidden', buffs.length === 0);
   },
