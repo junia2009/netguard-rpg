@@ -5,7 +5,7 @@
 }
 
 body {
-  background: #050510;
+  background: #0a0a20;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,11 +18,11 @@ body {
   position: relative;
   width: 800px;
   height: 600px;
-  background: #000;
+  background: #060614;
   border: 2px solid #00ccff;
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 200, 255, 0.3);
+  box-shadow: 0 0 30px rgba(0, 200, 255, 0.55);
 }
 
 #game-canvas {
@@ -37,7 +37,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(180deg, #000510 0%, #001020 40%, #000a15 100%);
+  background: linear-gradient(180deg, #020c1c 0%, #061c3a 40%, #030d18 100%);
   z-index: 100;
 }
 

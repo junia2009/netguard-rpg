@@ -651,11 +651,11 @@ class Game {
     const time = Date.now() / 1000;
     const cw = this.canvas.width;
     const ch = this.canvas.height;
-    ctx.fillStyle = '#000510';
+    ctx.fillStyle = '#0a0a20';
     ctx.fillRect(0, 0, cw, ch);
 
     // Grid lines (circuit board)
-    ctx.strokeStyle = 'rgba(0,100,200,0.08)';
+    ctx.strokeStyle = 'rgba(0,100,200,0.15)';
     ctx.lineWidth = 1;
     for (let x = 0; x < cw; x += 40) {
       ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, ch); ctx.stroke();
@@ -669,9 +669,9 @@ class Game {
       const x = ((Math.sin(i * 1234.5) * 0.5 + 0.5) * cw + time * (10 + i % 20)) % cw;
       const y = (Math.cos(i * 5678.9) * 0.5 + 0.5) * ch;
       const brightness = Math.sin(time * 2 + i) * 0.3 + 0.7;
-      const c = i % 3 === 0 ? `rgba(0,255,200,${brightness * 0.4})` :
-                i % 3 === 1 ? `rgba(0,180,255,${brightness * 0.3})` :
-                              `rgba(0,100,255,${brightness * 0.2})`;
+      const c = i % 3 === 0 ? `rgba(0,255,200,${brightness * 0.7})` :
+                i % 3 === 1 ? `rgba(0,180,255,${brightness * 0.55})` :
+                              `rgba(0,120,255,${brightness * 0.4})`;
       ctx.fillStyle = c;
       ctx.fillRect(x, y, i % 5 === 0 ? 3 : 1, i % 5 === 0 ? 3 : 1);
     }
