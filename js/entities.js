@@ -49,7 +49,11 @@ class Player {
     this.dodgeVelY = 0;
   }
 
-  get atk() {
+  // Dodge system constants
+  static DODGE_DURATION     = 0.25; // seconds
+  static DODGE_COOLDOWN     = 1.2;  // seconds
+  static DODGE_INVINCIBLE   = 0.3;  // invincibility window (seconds)
+  static DODGE_SPEED_MULT   = 3.5;  // speed multiplier relative to normal movement
     let a = this.baseAtk;
     if (this.weapon && GameData.ITEMS[this.weapon]) a += GameData.ITEMS[this.weapon].stats.atk;
     if (this.buffAtkTimer > 0) a = Math.floor(a * 1.5);
@@ -96,7 +100,7 @@ class Player {
       if (this.dodgeTimer <= 0) {
         this.dodging = false;
       } else {
-        const dodgeSpeed = this.spd * 60 * dt * 3.5;
+        const dodgeSpeed = this.spd * 60 * dt * Player.DODGE_SPEED_MULT;
         const newX = this.x + this.dodgeVelX * dodgeSpeed;
         const newY = this.y + this.dodgeVelY * dodgeSpeed;
         if (MapRenderer.isWalkable(mapId, newX, this.y, this.size)) this.x = newX;
@@ -229,9 +233,9 @@ class Player {
       }
     }
     this.dodging = true;
-    this.dodgeTimer = 0.25;
-    this.dodgeCooldown = 1.2;
-    this.invincible = Math.max(this.invincible, 0.3);
+    this.dodgeTimer = Player.DODGE_DURATION;
+    this.dodgeCooldown = Player.DODGE_COOLDOWN;
+    this.invincible = Math.max(this.invincible, Player.DODGE_INVINCIBLE);
     this.attacking = false;
     return true;
   }
@@ -400,7 +404,7 @@ class Player {
 
     // Dodge aura ring
     if (this.dodging) {
-      const progress = this.dodgeTimer / 0.25;
+      const progress = this.dodgeTimer / Player.DODGE_DURATION;
       ctx.strokeStyle = `rgba(0, 240, 255, ${progress * 0.9})`;
       ctx.lineWidth = 3;
       ctx.shadowColor = '#00ffff';
