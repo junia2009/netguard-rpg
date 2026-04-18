@@ -354,8 +354,8 @@ GameData.ENEMIES = {
   },
   dark_ai: {
     name: 'ダークAI', sprite: 'DA', color: '#aa00ff',
-    hp: 800, atk: 45, def: 25, spd: 0.8, exp: 800, gold: 500,
-    size: 48, aggroRange: 300, attackRange: 48, attackCooldown: 1800,
+    hp: 950, atk: 55, def: 25, spd: 1.0, exp: 800, gold: 500,
+    size: 48, aggroRange: 300, attackRange: 48, attackCooldown: 1400,
     isBoss: true, isDungeonBoss: true,
     drops: [{ item: 'neural_lance', chance: 0.5 }, { item: 'neural_barrier', chance: 0.5 }],
   },
