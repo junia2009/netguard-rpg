@@ -54,6 +54,8 @@ class Player {
   static DODGE_COOLDOWN     = 1.2;  // seconds
   static DODGE_INVINCIBLE   = 0.3;  // invincibility window (seconds)
   static DODGE_SPEED_MULT   = 3.5;  // speed multiplier relative to normal movement
+
+  get atk() {
     let a = this.baseAtk;
     if (this.weapon && GameData.ITEMS[this.weapon]) a += GameData.ITEMS[this.weapon].stats.atk;
     if (this.buffAtkTimer > 0) a = Math.floor(a * 1.5);
