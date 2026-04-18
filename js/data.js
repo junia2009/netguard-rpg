@@ -331,31 +331,31 @@ GameData.ENEMIES = {
   // --- ランダムダンジョン用エネミー ---
   botnet_node: {
     name: 'ボットネット', sprite: 'BN', color: '#44aa66',
-    hp: 40, atk: 7, def: 3, spd: 1.2, exp: 20, gold: 12,
+    hp: 46, atk: 8, def: 4, spd: 1.2, exp: 20, gold: 12,
     size: 20, aggroRange: 130, attackRange: 24, attackCooldown: 1400,
     drops: [{ item: 'patch', chance: 0.3 }],
   },
   cryptojacker: {
     name: 'クリプトジャッカー', sprite: 'CJ', color: '#ccaa00',
-    hp: 55, atk: 13, def: 5, spd: 1.6, exp: 35, gold: 25,
+    hp: 63, atk: 15, def: 6, spd: 1.6, exp: 35, gold: 25,
     size: 22, aggroRange: 150, attackRange: 26, attackCooldown: 1200,
     drops: [{ item: 'hotfix', chance: 0.25 }, { item: 'memory_cleaner', chance: 0.15 }],
   },
   apt: {
     name: 'APT', sprite: 'AP', color: '#8833cc',
-    hp: 90, atk: 20, def: 12, spd: 1.0, exp: 60, gold: 45,
+    hp: 104, atk: 23, def: 14, spd: 1.0, exp: 60, gold: 45,
     size: 24, aggroRange: 170, attackRange: 30, attackCooldown: 1300,
     drops: [{ item: 'hotfix', chance: 0.35 }, { item: 'firewall_breaker', chance: 0.08 }],
   },
   polymorphic: {
     name: 'ポリモーフィック', sprite: 'PM', color: '#cc44aa',
-    hp: 120, atk: 25, def: 16, spd: 1.4, exp: 85, gold: 60,
+    hp: 138, atk: 29, def: 18, spd: 1.4, exp: 85, gold: 60,
     size: 24, aggroRange: 160, attackRange: 32, attackCooldown: 1100,
     drops: [{ item: 'overclock', chance: 0.3 }, { item: 'rootkit_slicer', chance: 0.06 }, { item: 'quantum_shield', chance: 0.06 }],
   },
   dark_ai: {
     name: 'ダークAI', sprite: 'DA', color: '#aa00ff',
-    hp: 950, atk: 55, def: 25, spd: 1.0, exp: 800, gold: 500,
+    hp: 1100, atk: 65, def: 28, spd: 1.0, exp: 800, gold: 500,
     size: 48, aggroRange: 300, attackRange: 48, attackCooldown: 1400,
     isBoss: true, isDungeonBoss: true,
     drops: [{ item: 'neural_lance', chance: 0.5 }, { item: 'neural_barrier', chance: 0.5 }],

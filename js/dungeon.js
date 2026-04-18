@@ -246,7 +246,7 @@ const DungeonGenerator = (() => {
     // Enemies
     const enemies = [];
     const enemyTypes = getEnemyTypes(floor);
-    const enemyCount = 4 + floor * 2;
+    const enemyCount = 5 + floor * 2;
 
     // Place enemies in rooms (skip entrance room)
     const enemyRooms = rooms.filter((r, i) => i !== 0);
