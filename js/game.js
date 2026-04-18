@@ -317,6 +317,30 @@ class Game {
     UI.showDialogueText('リペアプログラム', '全システム復旧完了。オールグリーンです。');
   }
 
+  returnToTitle() {
+    // Save before returning
+    this.saveGame();
+
+    // Clean up dungeon state if active
+    if (this.dungeonState) {
+      this.leaveDungeon();
+    }
+
+    // Reset game state
+    this.state = 'title';
+    this.player = null;
+    this.enemies = [];
+    this.npcs = [];
+
+    // Hide HUD, show title
+    document.getElementById('hud').classList.add('hidden');
+    document.getElementById('title-screen').classList.remove('hidden');
+
+    // Play title BGM
+    Music.playTitle();
+    this.updateContinueButton();
+  }
+
   onBossDefeated() {
     // ボス撃破ダイアログを少し遅らせて表示
     setTimeout(() => {

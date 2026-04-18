@@ -148,6 +148,8 @@ const UI = {
       this.game.healPlayer();
     } else if (choice.action === 'open_shop') {
       this.openShop();
+    } else if (choice.action === 'return_to_title') {
+      this.game.returnToTitle();
     }
     // 'close' does nothing extra
   },
