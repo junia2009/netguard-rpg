@@ -594,6 +594,66 @@ body {
   100% { opacity: 0; transform: translateY(-40px); }
 }
 
+/* --- イースターエッグ: GBカラーテーマ --- */
+.easter-hint {
+  color: #888;
+  text-align: center;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.easter-color-btn {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  text-align: left;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  transition: border-color 0.2s, transform 0.1s;
+}
+
+.easter-color-btn:hover, .easter-color-btn.selected {
+  border-color: #00ccff;
+  transform: scale(1.02);
+}
+
+#gb-body.gb-theme-cobalt {
+  background: linear-gradient(180deg, #5b8dd9 0%, #4070bb 50%, #305aaa 100%) !important;
+  border-top-color: #6a9de8 !important;
+}
+
+#gb-body.gb-theme-red {
+  background: linear-gradient(180deg, #d94040 0%, #bb3030 50%, #9a2020 100%) !important;
+  border-top-color: #e85050 !important;
+}
+
+#gb-body.gb-theme-pearl {
+  background: linear-gradient(180deg, #b8d4e8 0%, #9abcd4 50%, #7aaabf 100%) !important;
+  border-top-color: #c8e4f8 !important;
+}
+
+#gb-body.gb-theme-emerald {
+  background: linear-gradient(180deg, #40b870 0%, #309a58 50%, #208040 100%) !important;
+  border-top-color: #50c880 !important;
+}
+
+#gb-body.gb-theme-rainbow {
+  background: linear-gradient(180deg, #ff6b6b 0%, #ffd93d 25%, #6bcb77 50%, #4d96ff 75%, #c77dff 100%) !important;
+  border-top-color: #ff9a9a !important;
+  animation: gb-rainbow-hue 3s linear infinite;
+}
+
+@keyframes gb-rainbow-hue {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
 /* --- ユーティリティ --- */
 .hidden { display: none !important; }
 
